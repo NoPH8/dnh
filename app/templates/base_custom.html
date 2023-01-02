@@ -1,0 +1,15 @@
+{% extends 'admin/base.html' %}
+
+{% block access_control %}
+    {% if current_user.is_authenticated %}
+        <div class="navbar-nav btn-group dropdown">
+            <button type="button" class="btn btn-primary dropdown-toggle btn-secondary" data-toggle="dropdown">
+                {{ current_user.username }}
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="{{ url_for('security.logout') }}">Log out</a>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+

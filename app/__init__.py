@@ -6,6 +6,7 @@ from config import AppConfig
 from .admin import UserModelView, admin
 from .database import db
 from .models import Role, User, UserRoles
+from .signals import connect_update_last_login_signal
 from .utils import create_roles, create_tables
 
 
@@ -42,5 +43,7 @@ def create_app(config_class=AppConfig):
     # App hooks
     create_tables(app)
     create_roles(app)
+    connect_update_last_login_signal(app, db)
 
     return app
+

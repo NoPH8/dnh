@@ -17,13 +17,13 @@ class AppConfig:
     SQLALCHEMY_DATABASE_URI = f'sqlite:///{DB_PATH}'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    # Development settings
-    DEBUG = config('DEBUG', cast=bool, default=False)
-
     # Flask admin settings
     FLASK_ADMIN_SWATCH = 'cerulean'
 
     # Flask security settings
+    SECURITY_CHANGEABLE = True
+    SECURITY_CHANGE_URL = '/admin/change-password/'
+    SECURITY_SEND_PASSWORD_CHANGE_EMAIL = False
     SECURITY_LOGIN_URL = '/admin/login/'
     SECURITY_LOGOUT_URL = '/admin/logout/'
     SECURITY_POST_LOGIN_VIEW = '/admin/'

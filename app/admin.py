@@ -7,8 +7,8 @@ from flask_security import current_user
 from wtforms import PasswordField, ValidationError
 
 from .database import db
-from .models import User
-from .permissions import access_to_users
+from .models import Record, User
+from .permissions import access_to_records, access_to_users
 
 
 class CheckAccessMixin:
@@ -67,9 +67,16 @@ class UserModelView(CheckAccessMixin, ModelView):
         return access_to_users
 
 
+class RecordModelView(CheckAccessMixin, ModelView):
+    @staticmethod
+    def get_access_permission():
+        return access_to_records
+
+
 admin = flask_admin.Admin(
     name=config('APP_NAME', default='DNH'),
     base_template='base_custom.html',
     template_mode='bootstrap4',
 )
 admin.add_view(UserModelView(User, db.session))
+admin.add_view(RecordModelView(Record, db.session))

@@ -76,3 +76,22 @@ class Role(RoleMixin, db.Model):
 
     def __str__(self):
         return self.name
+
+
+class Record(db.Model):
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+    )
+    domain = db.Column(
+        db.String,
+        unique=True,
+        nullable=False,
+    )
+    description = db.Column(
+        db.String,
+        nullable=True,
+    )
+
+    def __str__(self):
+        return self.domain

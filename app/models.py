@@ -1,33 +1,72 @@
-from flask_security import (RoleMixin, UserMixin)
-from peewee import BooleanField, CharField, DateTimeField, ForeignKeyField, TextField
+from flask_security import RoleMixin, UserMixin
 
 from app.database import db
-from app.utils import get_current_datatime, get_fs_uniquifier
-
-
-class Role(RoleMixin, db.Model):
-    name = CharField(unique=True)
-    description = TextField(null=True)
-    permissions = TextField(null=True)
-
-
-class User(UserMixin, db.Model):
-    active = BooleanField(default=True)
-    fs_uniquifier = TextField(null=False, default=get_fs_uniquifier)
-    joined_at = DateTimeField(null=True, default=get_current_datatime)
-    last_login_at = DateTimeField(null=True)
-    password = CharField()
-    username = CharField(unique=True)
+from app.utils import get_fs_uniquifier
 
 
 class UserRoles(db.Model):
-    # Because peewee does not come with built-in many-to-many
-    # relationships, we need this intermediary class to link
-    # user to roles.
-    user = ForeignKeyField(User, related_name='roles')
-    role = ForeignKeyField(Role, related_name='users')
-    name = property(lambda self: self.role.name)
-    description = property(lambda self: self.role.description)
+    id = db.Column(
+        db.Integer(),
+        primary_key=True,
+    )
+    user_id = db.Column(
+        'user_id',
+        db.Integer(),
+        db.ForeignKey('user.id'),
+    )
+    role_id = db.Column(
+        'role_id',
+        db.Integer(),
+        db.ForeignKey('role.id'),
+    )
 
-    def get_permissions(self):
-        return self.role.get_permissions()
+    def __str__(self):
+        return self.name
+
+
+class User(UserMixin, db.Model):
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+    )
+    active = db.Column(
+        db.Boolean(),
+    )
+    fs_uniquifier = db.Column(
+        db.String(255),
+        unique=True,
+        nullable=False,
+        default=get_fs_uniquifier,
+    )
+    roles = db.relationship(
+        'Role',
+        secondary='user_roles',
+        backref=db.backref('users', lazy='dynamic'),
+    )
+    password = db.Column(
+        db.String,
+        nullable=False,
+    )
+    username = db.Column(
+        db.String(255),
+        unique=True,
+        nullable=False,
+    )
+
+
+class Role(RoleMixin, db.Model):
+    id = db.Column(
+        db.Integer(),
+        primary_key=True,
+    )
+    name = db.Column(
+        db.String(80),
+        unique=True,
+    )
+    description = db.Column(
+        db.String,
+        unique=True,
+    )
+
+    def __str__(self):
+        return self.name

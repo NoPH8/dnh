@@ -1,9 +1,10 @@
 import flask_admin
 from decouple import config
 from flask import redirect, url_for
-from flask_admin.contrib.peewee import ModelView
+from flask_admin.contrib.sqla import ModelView
 from flask_security import current_user
 
+from .database import db
 from .models import User
 
 
@@ -41,4 +42,4 @@ admin = flask_admin.Admin(
     base_template='base_custom.html',
     template_mode='bootstrap4',
 )
-admin.add_view(UserModelView(User))
+admin.add_view(UserModelView(User, db.session))

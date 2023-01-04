@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for
 from flask_admin import helpers as admin_helpers
-from flask_security import PeeweeUserDatastore, Security
+from flask_security import SQLAlchemySessionUserDatastore, Security
 
 from config import AppConfig
 from .admin import UserModelView, admin
@@ -16,7 +16,7 @@ def create_app(config_class=AppConfig):
     db.init_app(app)
 
     # Flask security initialization
-    user_datastore = PeeweeUserDatastore(db, User, Role, UserRoles)
+    user_datastore = SQLAlchemySessionUserDatastore(db.session, User, Role)
     app.security = Security(app, user_datastore)
 
     # Flask admin initialization

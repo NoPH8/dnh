@@ -1,3 +1,3 @@
-from playhouse.flask_utils import FlaskDB
+from flask_sqlalchemy import SQLAlchemy
 
-db = FlaskDB()
+db = SQLAlchemy()

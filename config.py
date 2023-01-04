@@ -14,11 +14,8 @@ class AppConfig:
     # Database settings
     DB_NAME = config('DB_NAME', default='database.sqlite')
     DB_PATH = pathlib.Path.joinpath(BASE_DIR, DB_NAME)
-    DATABASE = {
-        'name': DB_PATH,
-        'engine': 'peewee.SqliteDatabase',
-        # 'engine': 'playhouse.sqlite_ext.SqliteExtDatabase',
-    }
+    SQLALCHEMY_DATABASE_URI = f'sqlite:///{DB_PATH}'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # Development settings
     DEBUG = config('DEBUG', cast=bool, default=False)

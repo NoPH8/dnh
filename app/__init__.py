@@ -36,6 +36,9 @@ def create_app(config_class=AppConfig):
             get_url=url_for
         )
 
+    from app.management import manage_bp
+    app.register_blueprint(manage_bp)
+
     # App hooks
     create_tables(app)
     create_roles(app)

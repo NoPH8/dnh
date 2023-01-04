@@ -10,10 +10,9 @@ def create_roles(app):
     with app.app_context():
         from .database import db
 
-        for role_data in ROLES:
-            role_name = role_data.get('name')
+        for role_name in ROLES:
             if not app.security.datastore.find_role(role=role_name):
-                app.security.datastore.create_role(**role_data)
+                app.security.datastore.create_role(name=role_name)
 
         db.session.commit()
 

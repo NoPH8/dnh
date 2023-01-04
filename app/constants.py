@@ -1,12 +1,5 @@
-ROLE_USERS_EDITOR = {
-    'name': 'Users editor',
-    'description': 'Has access to edit users',
-}
-
-ROLE_RECORDS_EDITOR = {
-    'name': 'Records editor',
-    'description': 'Has access to edit records',
-}
+ROLE_USERS_EDITOR = 'Users editor'
+ROLE_RECORDS_EDITOR = 'Records editor'
 
 ROLES = (
     ROLE_USERS_EDITOR,

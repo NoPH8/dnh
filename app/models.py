@@ -1,7 +1,7 @@
-from flask_security import RoleMixin, UserMixin
+from flask_security import RoleMixin, UserMixin, hash_password
 
 from app.database import db
-from app.utils import get_fs_uniquifier
+from app.utils import get_current_datatime, get_fs_uniquifier
 
 
 class UserRoles(db.Model):
@@ -20,9 +20,6 @@ class UserRoles(db.Model):
         db.ForeignKey('role.id'),
     )
 
-    def __str__(self):
-        return self.name
-
 
 class User(UserMixin, db.Model):
     id = db.Column(
@@ -32,26 +29,39 @@ class User(UserMixin, db.Model):
     active = db.Column(
         db.Boolean(),
     )
+    created_at = db.Column(
+        db.DateTime,
+        default=get_current_datatime,
+    )
     fs_uniquifier = db.Column(
         db.String(255),
         unique=True,
-        nullable=False,
         default=get_fs_uniquifier,
+    )
+    password = db.Column(
+        db.String,
+        nullable=False,
+    )
+    last_login_at = db.Column(
+        db.DateTime,
+        nullable=True,
     )
     roles = db.relationship(
         'Role',
         secondary='user_roles',
         backref=db.backref('users', lazy='dynamic'),
     )
-    password = db.Column(
-        db.String,
-        nullable=False,
-    )
     username = db.Column(
         db.String(255),
         unique=True,
         nullable=False,
     )
+
+    def __str__(self):
+        return self.username
+
+    def set_password(self, raw_password):
+        self.password = hash_password(raw_password)
 
 
 class Role(RoleMixin, db.Model):
@@ -61,10 +71,6 @@ class Role(RoleMixin, db.Model):
     )
     name = db.Column(
         db.String(80),
-        unique=True,
-    )
-    description = db.Column(
-        db.String,
         unique=True,
     )
 

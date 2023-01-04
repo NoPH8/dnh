@@ -6,6 +6,7 @@ from config import AppConfig
 from .admin import UserModelView, admin
 from .database import db
 from .models import Role, User, UserRoles
+from .utils import create_roles, create_tables
 
 
 def create_app(config_class=AppConfig):
@@ -34,5 +35,9 @@ def create_app(config_class=AppConfig):
             h=admin_helpers,
             get_url=url_for
         )
+
+    # App hooks
+    create_tables(app)
+    create_roles(app)
 
     return app

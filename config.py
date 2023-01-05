@@ -2,7 +2,7 @@ import pathlib
 
 from decouple import config
 
-from app.utils import uia_username_mapper
+from app.tools.utils import uia_username_mapper
 
 BASE_DIR = pathlib.Path(__file__).parent
 

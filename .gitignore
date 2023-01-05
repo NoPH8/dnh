@@ -1,3 +1,5 @@
 /.env
 /database.sqlite*
 /.coverage
+/venv
+/.venv

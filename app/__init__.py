@@ -2,12 +2,12 @@ from flask import Flask, render_template, url_for
 from flask_admin import helpers as admin_helpers
 from flask_security import SQLAlchemySessionUserDatastore, Security
 
+from app.tools.utils import create_roles, create_tables
 from config import AppConfig
 from .admin import UserModelView, admin
 from .database import db
 from .models import Role, User, UserRoles
 from .signals import connect_update_last_login_signal
-from .utils import create_roles, create_tables
 
 
 def create_app(config_class=AppConfig):

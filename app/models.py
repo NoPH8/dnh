@@ -1,7 +1,7 @@
 from flask_security import RoleMixin, UserMixin, hash_password
 
 from app.database import db
-from app.utils import get_current_datatime, get_fs_uniquifier
+from app.tools.utils import get_current_datatime, get_fs_uniquifier
 
 
 class UserRoles(db.Model):

@@ -9,6 +9,7 @@ from wtforms import PasswordField, ValidationError
 from .database import db
 from .models import Record, User
 from .permissions import access_to_records, access_to_users
+from .tools.uri import extract_domain, validate_domain
 
 
 class CheckAccessMixin:
@@ -71,6 +72,15 @@ class RecordModelView(CheckAccessMixin, ModelView):
     @staticmethod
     def get_access_permission():
         return access_to_records
+
+    def validate_form(self, form, *args, **kwargs):
+        if domain_data := form.domain.data:
+            if extracted_domain := extract_domain(domain_data):
+                form.domain.data = extracted_domain
+            elif not validate_domain(domain_data):
+                raise ValidationError('Invaoid domain name')
+
+        return super().validate_form(form, *args, **kwargs)
 
 
 admin = flask_admin.Admin(

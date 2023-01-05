@@ -8,7 +8,7 @@ from app.constants import ROLES
 
 def create_roles(app):
     with app.app_context():
-        from .database import db
+        from app.database import db
 
         for role_name in ROLES:
             if not app.security.datastore.find_role(role=role_name):
@@ -19,7 +19,7 @@ def create_roles(app):
 
 def create_tables(app):
     with app.app_context():
-        from .database import db
+        from app.database import db
         db.create_all()
 
 

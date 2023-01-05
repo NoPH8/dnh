@@ -4,9 +4,9 @@ from flask_security import SQLAlchemySessionUserDatastore, Security
 
 from app.tools.utils import create_roles, create_tables
 from config import AppConfig
-from .admin import UserModelView, admin
+from .admin import admin
 from .database import db
-from .models import Role, User, UserRoles
+from .models import Role, User
 from .signals import connect_update_last_login_signal
 
 
@@ -46,4 +46,3 @@ def create_app(config_class=AppConfig):
     connect_update_last_login_signal(app, db)
 
     return app
-

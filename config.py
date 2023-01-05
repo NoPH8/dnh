@@ -39,3 +39,11 @@ class AppConfig:
     # Bcrypt is set as default SECURITY_PASSWORD_HASH, which requires a salt
     # TODO: Generate a good salt using: secrets.SystemRandom().getrandbits(128)
     SECURITY_PASSWORD_SALT = config('SECURITY_PASSWORD_SALT')
+
+
+class AppConfigTesting(AppConfig):
+    DB_NAME = 'database.sqlite.test'
+    DB_PATH = pathlib.Path.joinpath(BASE_DIR, DB_NAME)
+    SQLALCHEMY_DATABASE_URI = f'sqlite:///{DB_PATH}'
+
+    TESTING = True

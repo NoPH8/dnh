@@ -69,6 +69,34 @@ class UserModelView(CheckAccessMixin, ModelView):
 
 
 class RecordModelView(CheckAccessMixin, ModelView):
+    column_list = [
+        'domain',
+        'description',
+        'ip_addresses',
+        'created_at',
+        'updated_at',
+    ]
+
+    form_columns = [
+        'domain',
+        'description',
+        'ip_addresses',
+        'created_at',
+        'updated_at',
+    ]
+
+    form_widget_args = {
+        'created_at': {
+            'disabled': True,
+        },
+        'ip_addresses': {
+            'disabled': True,
+        },
+        'updated_at': {
+            'disabled': True,
+        },
+    }
+
     @staticmethod
     def get_access_permission():
         return access_to_records

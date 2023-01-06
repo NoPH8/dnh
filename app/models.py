@@ -83,6 +83,10 @@ class Record(db.Model):
         db.Integer,
         primary_key=True,
     )
+    created_at = db.Column(
+        db.DateTime,
+        default=get_current_datatime,
+    )
     domain = db.Column(
         db.String,
         unique=True,
@@ -90,6 +94,14 @@ class Record(db.Model):
     )
     description = db.Column(
         db.String,
+        nullable=True,
+    )
+    ip_addresses = db.Column(
+        db.String,
+        nullable=True,
+    )
+    updated_at = db.Column(
+        db.DateTime,
         nullable=True,
     )
 

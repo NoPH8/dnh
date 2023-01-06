@@ -73,14 +73,17 @@ class RecordModelView(CheckAccessMixin, ModelView):
     def get_access_permission():
         return access_to_records
 
-    def validate_form(self, form, *args, **kwargs):
-        if domain_data := form.domain.data:
-            if extracted_domain := extract_domain(domain_data):
-                form.domain.data = extracted_domain
-            elif not validate_domain(domain_data):
-                raise ValidationError('Invaoid domain name')
+    def validate_form(self, form):
+        if hasattr(form, 'domain'):  # Not Delete operation
+            if domain_data := form.domain.data:
+                if extracted_domain := extract_domain(domain_data):
+                    form.domain.data = extracted_domain
+                elif not validate_domain(domain_data):
+                    form.domain.errors = ('Invalid domain name', )
 
-        return super().validate_form(form, *args, **kwargs)
+                    return False
+
+        return super().validate_form(form)
 
 
 admin = flask_admin.Admin(

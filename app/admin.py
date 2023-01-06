@@ -46,6 +46,13 @@ class UserModelView(CheckAccessMixin, ModelView):
         'password',
     ]
 
+    form_columns = [
+        'username',
+        'raw_password',
+        'active',
+        'roles',
+    ]
+
     form_extra_fields = {
         'raw_password': PasswordField('Password')
     }

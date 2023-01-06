@@ -28,6 +28,7 @@ class User(UserMixin, db.Model):
     )
     active = db.Column(
         db.Boolean(),
+        default=True,
     )
     created_at = db.Column(
         db.DateTime,

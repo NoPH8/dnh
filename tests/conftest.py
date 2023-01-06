@@ -1,8 +1,9 @@
 import pytest
-from flask_security import hash_password
+from flask import current_app
+from flask_security import hash_password, login_user
 
 from app import Role, User, create_app
-from app.database import db
+from app.database import db as app_db
 from app.models import Record
 from config import AppConfigTesting
 
@@ -12,12 +13,12 @@ def app():
     app = create_app(AppConfigTesting)
 
     with app.app_context():
-        db.create_all()
+        app_db.create_all()
 
         yield app
 
-        db.session.remove()
-        db.drop_all()
+        app_db.session.remove()
+        app_db.drop_all()
         # Fix for Flask-security from singleton
         delattr(app.security.confirm_register_form, 'username')
         delattr(app.security.login_form, 'username')
@@ -35,8 +36,8 @@ def runner(app):
 
 
 @pytest.fixture()
-def db_session(app):
-    return db.session()
+def db(app):
+    return app_db
 
 
 def create_instance(db_session, model_name, values: dict):
@@ -48,8 +49,8 @@ def create_instance(db_session, model_name, values: dict):
 
 
 @pytest.fixture()
-def user(db_session):
-    def _user(**values) -> 'User':
+def user(db):
+    def _user(is_auth=False, **values) -> 'User':
         password = values.pop('password', 'SecretPassword')
         users_count = db.session.query(User.id).count()
 
@@ -59,13 +60,18 @@ def user(db_session):
             'roles': list(db.session.execute(db.select(Role)).scalars())
         }
 
-        return create_instance(db_session, User, default_values | values)
+        user = create_instance(db.session, User, default_values | values)
+        if is_auth:
+            with current_app.test_request_context():
+                login_user(user)
+
+        return user
 
     return _user
 
 
 @pytest.fixture()
-def role(db_session):
+def role(db):
     def _role(**values) -> 'Role':
         roles_count = db.session.query(Role.id).count()
 
@@ -73,13 +79,13 @@ def role(db_session):
             'name': f'role_{roles_count}',
         }
 
-        return create_instance(db_session, Role, default_values | values)
+        return create_instance(db.session, Role, default_values | values)
 
     return _role
 
 
 @pytest.fixture()
-def record(db_session):
+def record(db):
     def _record(**values) -> 'Record':
         records_count = db.session.query(Record.id).count()
 
@@ -87,6 +93,6 @@ def record(db_session):
             'domain': f'record{records_count}.example.com',
         }
 
-        return create_instance(db_session, Record, default_values | values)
+        return create_instance(db.session, Record, default_values | values)
 
     return _record

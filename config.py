@@ -34,10 +34,10 @@ class AppConfig:
         {'username': {'mapper': uia_username_mapper, 'case_insensitive': True}},
     ]
 
-    # TODO: Generate a nice key using secrets.token_urlsafe()
+    # Generate a nice key using 'make generate-secret-key'
     SECRET_KEY = config('SECRET_KEY')
     # Bcrypt is set as default SECURITY_PASSWORD_HASH, which requires a salt
-    # TODO: Generate a good salt using: secrets.SystemRandom().getrandbits(128)
+    # Generate a nice key using 'make generate-secret-salt'
     SECURITY_PASSWORD_SALT = config('SECURITY_PASSWORD_SALT')
 
 

@@ -1,3 +1,4 @@
+import ipaddress
 import re
 from typing import Optional
 
@@ -55,3 +56,11 @@ def validate_domain(domain_like_str: str) -> bool:
     validator = DomainValidator()
 
     return validator(domain_like_str)
+
+
+def validate_ip_address(value: str) -> bool:
+    try:
+        ipaddress.ip_address(value)
+        return True
+    except ValueError:
+        return False

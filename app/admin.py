@@ -9,7 +9,7 @@ from wtforms import PasswordField, ValidationError
 from .database import db
 from .models import Record, User
 from .permissions import access_to_records, access_to_users
-from .tools.uri import extract_domain, validate_domain
+from .tools.network import extract_domain, validate_domain
 
 
 class CheckAccessMixin:

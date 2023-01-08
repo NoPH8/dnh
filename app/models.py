@@ -1,3 +1,5 @@
+import ipaddress
+
 from flask_security import RoleMixin, UserMixin, hash_password
 
 from app.database import db
@@ -108,3 +110,7 @@ class Record(db.Model):
 
     def __str__(self):
         return self.domain
+
+    @property
+    def ip_address_list(self):
+        return [ipaddress.ip_address(elem) for elem in self.ip_addresses.split('; ')]

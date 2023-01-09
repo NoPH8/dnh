@@ -10,6 +10,7 @@ BASE_DIR = pathlib.Path(__file__).parent
 class AppConfig:
     # Common settings
     APP_NAME = config('APP_NAME', default='DNH')
+    DOMAIN_UPDATE_INTERVAL = config('DOMAIN_UPDATE_INTERVAL', cast=int, default=15)  # in minutes
 
     # Database settings
     DB_NAME = config('DB_NAME', default='database.sqlite')

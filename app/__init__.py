@@ -1,3 +1,4 @@
+from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, render_template, url_for
 from flask_admin import helpers as admin_helpers
 from flask_security import SQLAlchemySessionUserDatastore, Security
@@ -24,6 +25,10 @@ def create_app(config_class=AppConfig):
     # Flask admin initialization
     admin.init_app(app)
 
+    # Scheduler initialization
+    app.scheduler = BackgroundScheduler()
+    app.scheduler.start()
+
     @app.route('/')
     def index():
         return render_template('index.html')
@@ -39,6 +44,8 @@ def create_app(config_class=AppConfig):
 
     from app.management import manage_bp
     app.register_blueprint(manage_bp)
+    from app.scheduler import scheduler_bp
+    app.register_blueprint(scheduler_bp)
 
     # App hooks
     create_tables(app)

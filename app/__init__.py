@@ -1,5 +1,5 @@
 from apscheduler.schedulers.background import BackgroundScheduler
-from flask import Flask, render_template, url_for
+from flask import Flask, url_for
 from flask_admin import helpers as admin_helpers
 from flask_security import SQLAlchemySessionUserDatastore, Security
 
@@ -28,10 +28,6 @@ def create_app(config_class=AppConfig):
     # Scheduler initialization
     app.scheduler = BackgroundScheduler()
     app.scheduler.start()
-
-    @app.route('/')
-    def index():
-        return render_template('index.html')
 
     @app.security.context_processor
     def security_context_processor():

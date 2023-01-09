@@ -1,8 +1,7 @@
 import pathlib
 
 from decouple import config
-
-from app.tools.utils import uia_username_mapper
+from flask_security import uia_username_mapper
 
 BASE_DIR = pathlib.Path(__file__).parent
 

@@ -1,8 +1,6 @@
 import datetime
 import uuid
 
-import bleach
-
 from app.constants import ROLES
 
 
@@ -29,7 +27,3 @@ def get_fs_uniquifier():
 
 def get_current_datatime():
     return datetime.datetime.now()
-
-
-def uia_username_mapper(identity):
-    return bleach.clean(identity, strip=True)

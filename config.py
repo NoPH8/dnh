@@ -1,8 +1,7 @@
 import pathlib
 
 from decouple import config
-
-from app.tools.utils import uia_username_mapper
+from flask_security import uia_username_mapper
 
 BASE_DIR = pathlib.Path(__file__).parent
 
@@ -46,5 +45,7 @@ class AppConfigTesting(AppConfig):
     DB_NAME = 'database.sqlite.test'
     DB_PATH = pathlib.Path.joinpath(BASE_DIR, DB_NAME)
     SQLALCHEMY_DATABASE_URI = f'sqlite:///{DB_PATH}'
+
+    SECURITY_PASSWORD_HASH = 'plaintext'
 
     TESTING = True

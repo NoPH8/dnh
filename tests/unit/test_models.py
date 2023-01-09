@@ -19,7 +19,7 @@ def test_record_str(record):
     assert str(instance) == instance.domain
 
 
-def test_recort_ip_address_list(record):
+def test_record_ip_address_list(record):
     instance = record(ip_addresses='127.0.0.1')
 
     assert instance.ip_address_list == [ipaddress.ip_address('127.0.0.1')]

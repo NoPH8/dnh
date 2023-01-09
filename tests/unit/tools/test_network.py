@@ -1,6 +1,7 @@
 import pytest
 
-from app.tools.network import extract_domain, validate_domain, validate_ip_address
+from app.tools.network import (extract_domain, validate_domain, validate_ip_address,
+                               validate_ip_range)
 
 
 @pytest.mark.parametrize('value,expected', [
@@ -41,3 +42,16 @@ def test_domain_validator(value, expected):
 ])
 def test_validate_ip_address(value, expected):
     assert validate_ip_address(value) == expected
+
+
+@pytest.mark.parametrize('value,expected', [
+    ('127.0.0.1/32', True),
+    ('127.0.0.1/24', False),
+    ('127.0.0.1', True),
+    ('127.0.0.258/32', False),
+    ('3002:0bd6:0000:0000:0000:ee00:0033:6778', True),
+    ('3002:0bd6:0000:0000:0000:ee00:0033:6778/64', False),
+    ('2001:db8:abcd:0012::0/64', True),
+])
+def test_validate_ip_range(value, expected):
+    assert validate_ip_range(value) == expected

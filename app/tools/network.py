@@ -64,3 +64,11 @@ def validate_ip_address(value: str) -> bool:
         return True
     except ValueError:
         return False
+
+
+def validate_ip_range(value: str) -> bool:
+    try:
+        ipaddress.ip_network(value)
+        return True
+    except ValueError:
+        return False

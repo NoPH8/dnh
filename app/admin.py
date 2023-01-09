@@ -7,9 +7,9 @@ from flask_security import current_user
 from wtforms import PasswordField, ValidationError
 
 from .database import db
-from .models import Record, User
+from .models import IPRange, Record, User
 from .permissions import access_to_records, access_to_users
-from .tools.network import extract_domain, validate_domain
+from .tools.network import extract_domain, validate_domain, validate_ip_range
 
 
 class CheckAccessMixin:
@@ -121,6 +121,44 @@ class RecordModelView(CheckAccessMixin, ModelView):
         return super().validate_form(form)
 
 
+class IPRangeModelView(CheckAccessMixin, ModelView):
+    column_labels = {
+        'ip_range': 'IP range'
+    }
+
+    column_list = [
+        'ip_range',
+        'description',
+        'created_at',
+    ]
+
+    form_columns = [
+        'ip_range',
+        'description',
+        'created_at',
+    ]
+
+    form_widget_args = {
+        'created_at': {
+            'disabled': True,
+        },
+    }
+
+    @staticmethod
+    def get_access_permission():
+        return access_to_records
+
+    def validate_form(self, form):
+        if hasattr(form, 'ip_range'):  # Not Delete operation
+            if ip_range := form.ip_range.data:
+                if not validate_ip_range(ip_range):
+                    form.ip_range.errors = ('Invalid IP range', )
+
+                    return False
+
+        return super().validate_form(form)
+
+
 admin = flask_admin.Admin(
     name=config('APP_NAME', default='DNH'),
     base_template='base_custom.html',
@@ -128,3 +166,4 @@ admin = flask_admin.Admin(
 )
 admin.add_view(UserModelView(User, db.session))
 admin.add_view(RecordModelView(Record, db.session))
+admin.add_view(IPRangeModelView(IPRange, db.session, name='IP range'))

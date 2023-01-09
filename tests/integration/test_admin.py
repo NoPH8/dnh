@@ -87,3 +87,26 @@ def test_record_delete(db, client, record, user):
 
     assert response.status_code == HTTPStatus.FOUND
     assert db.session.execute(db.select(Record)).scalar() is None
+
+
+@pytest.mark.parametrize('ip_range_value,expected', [
+    ('127.0.0.1/24', 'Invalid IP range'),
+    ('', 'This field is required'),
+])
+def test_ip_range_create_invalid(db, client, user, ip_range_value, expected):
+    user(is_auth=True)
+
+    response = client.post('admin/iprange/new/', data={'ip_range': ip_range_value})
+
+    assert response.status_code == HTTPStatus.OK
+    assert expected in response.text
+
+
+def test_ip_range_delete(db, client, ip_range, user):
+    user(is_auth=True)
+    ip_range = ip_range()
+
+    response = client.post('admin/iprange/delete/', data={'id': ip_range.id})
+
+    assert response.status_code == HTTPStatus.FOUND
+    assert db.session.execute(db.select(Record)).scalar() is None

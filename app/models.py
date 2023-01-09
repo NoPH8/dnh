@@ -114,3 +114,29 @@ class Record(db.Model):
     @property
     def ip_address_list(self):
         return [ipaddress.ip_address(elem) for elem in self.ip_addresses.split('; ')]
+
+
+class IPRange(db.Model):
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+    )
+    created_at = db.Column(
+        db.DateTime,
+        default=get_current_datatime,
+    )
+    description = db.Column(
+        db.String,
+        nullable=True,
+    )
+    ip_range = db.Column(
+        db.String,
+        nullable=False,
+    )
+
+    def __str__(self):
+        return self.ip_range
+
+    @property
+    def ip_network(self):
+        return ipaddress.ip_network(self.ip_range)

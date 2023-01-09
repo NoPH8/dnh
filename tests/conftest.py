@@ -4,7 +4,7 @@ from flask_security import hash_password, login_user
 
 from app import Role, User, create_app
 from app.database import db as app_db
-from app.models import Record
+from app.models import IPRange, Record
 from config import AppConfigTesting
 
 
@@ -96,3 +96,17 @@ def record(db):
         return create_instance(db.session, Record, default_values | values)
 
     return _record
+
+
+@pytest.fixture()
+def ip_range(db):
+    def _ip_range(**values) -> 'IPRange':
+        ip_ranges_count = db.session.query(IPRange.id).count()
+
+        default_values = {
+            'ip_range': f'127.0.0.{ip_ranges_count}',
+        }
+
+        return create_instance(db.session, IPRange, default_values | values)
+
+    return _ip_range

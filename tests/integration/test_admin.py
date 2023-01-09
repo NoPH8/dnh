@@ -2,7 +2,7 @@ from http import HTTPStatus
 
 import pytest
 
-from app.models import Record
+from app.models import IPRange, Record
 
 
 def test_user_login(user, client):
@@ -89,6 +89,16 @@ def test_record_delete(db, client, record, user):
     assert db.session.execute(db.select(Record)).scalar() is None
 
 
+def test_ip_range_create_success(db, client, user):
+    user(is_auth=True)
+
+    response = client.post('admin/iprange/new/', data={'ip_range': '127.0.0.1/32'})
+
+    assert response.status_code == HTTPStatus.FOUND
+    ip_range = db.session.execute(db.select(IPRange)).scalar()
+    assert ip_range.ip_range == '127.0.0.1/32'
+
+
 @pytest.mark.parametrize('ip_range_value,expected', [
     ('127.0.0.1/24', 'Invalid IP range'),
     ('', 'This field is required'),
@@ -109,4 +119,4 @@ def test_ip_range_delete(db, client, ip_range, user):
     response = client.post('admin/iprange/delete/', data={'id': ip_range.id})
 
     assert response.status_code == HTTPStatus.FOUND
-    assert db.session.execute(db.select(Record)).scalar() is None
+    assert db.session.execute(db.select(IPRange)).scalar() is None

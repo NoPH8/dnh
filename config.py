@@ -46,4 +46,6 @@ class AppConfigTesting(AppConfig):
     DB_PATH = pathlib.Path.joinpath(BASE_DIR, DB_NAME)
     SQLALCHEMY_DATABASE_URI = f'sqlite:///{DB_PATH}'
 
+    SECURITY_PASSWORD_HASH = 'plaintext'
+
     TESTING = True

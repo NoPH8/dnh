@@ -20,3 +20,9 @@ def test_ip_range(ip_range):
     instance = ip_range(ip_range='127.0.0.0/24')
 
     assert str(instance) == instance.ip_range
+
+
+def test_api_key(api_key):
+    instance = api_key()
+
+    assert str(instance) == instance.name

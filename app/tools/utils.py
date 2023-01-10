@@ -21,7 +21,7 @@ def create_tables(app):
         db.create_all()
 
 
-def get_fs_uniquifier():
+def get_unique_uuid():
     return uuid.uuid4().hex
 
 

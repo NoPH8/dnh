@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify
 
 from app import db
+from app.api.auth import api_key_required
 from app.models import IPRange, Record
 from app.tools.network import is_ip_address_in_network
 
@@ -8,6 +9,7 @@ api_v1 = Blueprint('v1', __name__, url_prefix='/v1')
 
 
 @api_v1.route('/ip_list')
+@api_key_required
 def ip_list():
     return jsonify(get_ip_list_response())
 

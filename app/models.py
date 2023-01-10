@@ -1,9 +1,7 @@
-import ipaddress
-
 from flask_security import RoleMixin, UserMixin, hash_password
 
 from app.database import db
-from app.tools.utils import get_current_datatime, get_fs_uniquifier
+from app.tools.utils import get_current_datatime, get_unique_uuid
 
 
 class UserRoles(db.Model):
@@ -39,7 +37,7 @@ class User(UserMixin, db.Model):
     fs_uniquifier = db.Column(
         db.String(255),
         unique=True,
-        default=get_fs_uniquifier,
+        default=get_unique_uuid,
     )
     password = db.Column(
         db.String,
@@ -111,10 +109,6 @@ class Record(db.Model):
     def __str__(self):
         return self.domain
 
-    @property
-    def ip_address_list(self):
-        return [ipaddress.ip_address(elem) for elem in self.ip_addresses.split('; ')]
-
 
 class IPRange(db.Model):
     id = db.Column(
@@ -137,6 +131,31 @@ class IPRange(db.Model):
     def __str__(self):
         return self.ip_range
 
-    @property
-    def ip_network(self):
-        return ipaddress.ip_network(self.ip_range)
+
+class APIKey(db.Model):
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+    )
+    created_at = db.Column(
+        db.DateTime,
+        default=get_current_datatime,
+    )
+    key = db.Column(
+        db.String(80),
+        default=get_unique_uuid,
+        nullable=False,
+        unique=True,
+    )
+    name = db.Column(
+        db.String(80),
+        nullable=False,
+        unique=True,
+    )
+
+    def __str__(self):
+        return self.name
+
+    @classmethod
+    def find_by_key(cls, key):
+        return cls.query.filter_by(key=key).first()

@@ -1,7 +1,9 @@
 ROLE_USERS_EDITOR = 'Users editor'
 ROLE_RECORDS_EDITOR = 'Records editor'
+ROLE_API_KEY_EDITOR = 'API key editor'
 
 ROLES = (
     ROLE_USERS_EDITOR,
     ROLE_RECORDS_EDITOR,
+    ROLE_API_KEY_EDITOR,
 )

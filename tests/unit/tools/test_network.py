@@ -1,6 +1,7 @@
 import pytest
 
-from app.tools.network import (extract_domain, validate_domain, validate_ip_address,
+from app.tools.network import (extract_domain, is_ip_address_in_network, validate_domain,
+                               validate_ip_address,
                                validate_ip_range)
 
 
@@ -22,13 +23,26 @@ def test_extract_domain(value, expected):
     assert extract_domain(value) == expected
 
 
+@pytest.mark.parametrize('ip_addr, ip_range, expected', [
+    ('127.0.0.1', '127.0.0.0/24', True),
+    ('127.0.0.2', '127.0.0.0/30', True),
+    ('127.0.0.5', '127.0.0.0/30', False),
+    ('3002:0bd6:0000:0000:0000:ee00:0033:6778', '127.0.0.0/30', False),
+    ('127.0.0.5', '2001:db8:abcd:0012::0/64', False),
+])
+def test_ip_address_in_range(ip_addr, ip_range, expected):
+    result = is_ip_address_in_network(ip_addr, ip_range)
+
+    assert result == expected
+
+
 @pytest.mark.parametrize('value,expected', [
     ('example', False),
     ('example.com', True),
     ('file://example.com', False),
     ('ftp://example.com', False),
 ])
-def test_domain_validator(value, expected):
+def test_validate_domain(value, expected):
     assert validate_domain(value) == expected
 
 

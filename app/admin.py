@@ -7,8 +7,8 @@ from flask_security import current_user
 from wtforms import PasswordField, ValidationError
 
 from .database import db
-from .models import IPRange, Record, User
-from .permissions import access_to_records, access_to_users
+from .models import APIKey, IPRange, Record, User
+from .permissions import access_to_api_keys, access_to_records, access_to_users
 from .tools.network import extract_domain, validate_domain, validate_ip_range
 
 
@@ -159,6 +159,33 @@ class IPRangeModelView(CheckAccessMixin, ModelView):
         return super().validate_form(form)
 
 
+class APIPKeyModelView(CheckAccessMixin, ModelView):
+    column_list = [
+        'name',
+        'key',
+        'created_at',
+    ]
+
+    form_columns = [
+        'name',
+        'key',
+        'created_at',
+    ]
+
+    form_widget_args = {
+        'created_at': {
+            'disabled': True,
+        },
+        'key': {
+            'disabled': True,
+        },
+    }
+
+    @staticmethod
+    def get_access_permission():
+        return access_to_api_keys
+
+
 admin = flask_admin.Admin(
     name=config('APP_NAME', default='DNH'),
     base_template='base_custom.html',
@@ -167,3 +194,4 @@ admin = flask_admin.Admin(
 admin.add_view(UserModelView(User, db.session))
 admin.add_view(RecordModelView(Record, db.session))
 admin.add_view(IPRangeModelView(IPRange, db.session, name='IP range'))
+admin.add_view(APIPKeyModelView(APIKey, db.session, name='API keys'))

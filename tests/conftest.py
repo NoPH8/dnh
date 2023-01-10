@@ -4,7 +4,7 @@ from flask_security import hash_password, login_user
 
 from app import Role, User, create_app
 from app.database import db as app_db
-from app.models import IPRange, Record
+from app.models import APIKey, IPRange, Record
 from config import AppConfigTesting
 
 
@@ -110,3 +110,17 @@ def ip_range(db):
         return create_instance(db.session, IPRange, default_values | values)
 
     return _ip_range
+
+
+@pytest.fixture()
+def api_key(db):
+    def _api_key(**values) -> 'APIKey':
+        api_keys_count = db.session.query(APIKey.id).count()
+
+        default_values = {
+            'name': f'device_{api_keys_count}',
+        }
+
+        return create_instance(db.session, APIKey, default_values | values)
+
+    return _api_key

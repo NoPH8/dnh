@@ -1,6 +1,7 @@
 import pytest
 
-from app.tools.network import (extract_domain, is_ip_address_in_network, validate_domain,
+from app.tools.network import (extract_domain, get_ip_addresses_str, is_ip_address_in_network,
+                               validate_domain,
                                validate_ip_address,
                                validate_ip_range)
 
@@ -21,6 +22,22 @@ from app.tools.network import (extract_domain, is_ip_address_in_network, validat
 ])
 def test_extract_domain(value, expected):
     assert extract_domain(value) == expected
+
+
+def test_get_ip_addresses_str(mocker, monkeypatch, record):
+    record = record(domain='example.com')
+    m_answer = mocker.Mock(side_effect=ValueError('Network failure'))
+    m_logger = mocker.Mock()
+
+    monkeypatch.setattr('app.tools.network.dns.resolver.resolve', m_answer, raising=True)
+    monkeypatch.setattr('app.tools.network.logger.exception', m_logger)
+
+    result = get_ip_addresses_str(record)
+
+    assert result == record.ip_addresses
+    assert record.ip_addresses is None
+    assert record.updated_at is None
+    m_logger.assert_called()
 
 
 @pytest.mark.parametrize('ip_addr, ip_range, expected', [

@@ -120,6 +120,9 @@ class RecordModelView(CheckAccessMixin, ModelView):
 
         return super().validate_form(form)
 
+    def on_model_change(self, form, model, is_created):
+        model.update_ip_addresses()
+
 
 class IPRangeModelView(CheckAccessMixin, ModelView):
     column_labels = {

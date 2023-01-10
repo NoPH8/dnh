@@ -1,6 +1,12 @@
 import ipaddress
+import logging
 import re
 from typing import Optional
+
+import dns
+
+logger = logging.getLogger(__name__)
+
 
 # Via https://github.com/django/django/blob/main/django/core/validators.py
 ul = "\u00a1-\uffff"  # Unicode letters range (must not be a raw string).
@@ -50,6 +56,20 @@ def extract_domain(url_like_str: str) -> Optional[str]:
     extractor = DomainExtractor()
 
     return extractor(url_like_str)
+
+
+def get_ip_addresses_str(record) -> str:
+    try:
+        resolved = dns.resolver.resolve(record.domain)
+    except Exception as exc:
+        logger.exception(f'Unknown error {exc}')
+        return record.ip_addresses
+
+    result = (
+        sorted([elem.address for elem in resolved if validate_ip_address(elem.address)])
+    )
+
+    return '; '.join(result)
 
 
 def is_ip_address_in_network(ip_address: str, ip_network: str) -> bool:

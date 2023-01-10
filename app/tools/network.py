@@ -52,6 +52,22 @@ def extract_domain(url_like_str: str) -> Optional[str]:
     return extractor(url_like_str)
 
 
+def is_ip_address_in_network(ip_address: str, ip_network: str) -> bool:
+    try:
+        return is_ipv4_in_network(ip_address, ip_network)
+    except ValueError:  # IPv6
+        return ipaddress.ip_address(ip_address) in ipaddress.ip_network(ip_network)
+
+
+def is_ipv4_in_network(ip_address, ip_network) -> bool:
+    ipaddr = int(''.join(['%02x' % int(x) for x in ip_address.split('.')]), 16)
+    netstr, bits = ip_network.split('/')
+    netaddr = int(''.join(['%02x' % int(x) for x in netstr.split('.')]), 16)
+    mask = (0xffffffff << (32 - int(bits))) & 0xffffffff
+
+    return (ipaddr & mask) == (netaddr & mask)
+
+
 def validate_domain(domain_like_str: str) -> bool:
     validator = DomainValidator()
 

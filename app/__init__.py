@@ -9,11 +9,13 @@ from .admin import admin
 from .database import db
 from .models import Role, User
 from .signals import connect_update_last_login_signal
+from .tools.json import JSONProvider
 
 
 def create_app(config_class=AppConfig):
     app = Flask(__name__)
     app.config.from_object(config_class)
+    app.json_provider_class = JSONProvider
 
     # DB initialization
     db.init_app(app)
@@ -42,6 +44,8 @@ def create_app(config_class=AppConfig):
     app.register_blueprint(manage_bp)
     from app.scheduler import scheduler_bp
     app.register_blueprint(scheduler_bp)
+    from app.api.views import api_bp
+    app.register_blueprint(api_bp)
 
     # App hooks
     create_tables(app)

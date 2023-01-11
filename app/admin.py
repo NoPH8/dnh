@@ -1,6 +1,7 @@
 import flask_admin
 from decouple import config
 from flask import redirect, url_for
+from flask_admin.actions import action
 from flask_admin.contrib.sqla import ModelView
 from flask_principal import PermissionDenied
 from flask_security import current_user
@@ -10,6 +11,11 @@ from .database import db
 from .models import APIKey, IPRange, Record, User
 from .permissions import access_to_api_keys, access_to_records, access_to_users
 from .tools.network import extract_domain, validate_domain, validate_ip_range
+
+
+def change_active_status(model, selected_ids, new_status):
+    db.session.query(model).filter(model.id.in_(selected_ids)).update({'active': new_status})
+    db.session.commit()
 
 
 class CheckAccessMixin:
@@ -77,6 +83,7 @@ class UserModelView(CheckAccessMixin, ModelView):
 
 class RecordModelView(CheckAccessMixin, ModelView):
     column_list = [
+        'active',
         'domain',
         'description',
         'ip_addresses',
@@ -87,6 +94,7 @@ class RecordModelView(CheckAccessMixin, ModelView):
     form_columns = [
         'domain',
         'description',
+        'active',
         'ip_addresses',
         'created_at',
         'updated_at',
@@ -123,6 +131,14 @@ class RecordModelView(CheckAccessMixin, ModelView):
     def on_model_change(self, form, model, is_created):
         model.update_ip_addresses()
 
+    @action('activate_records', 'Activate', 'Selected records will be activated')
+    def activate(self, selected_ids):
+        change_active_status(Record, selected_ids, True)
+
+    @action('deactivate_records', 'Deactivate', 'Selected records will be deactivated')
+    def deactivate(self, selected_ids):
+        change_active_status(Record, selected_ids, False)
+
 
 class IPRangeModelView(CheckAccessMixin, ModelView):
     column_labels = {
@@ -130,12 +146,14 @@ class IPRangeModelView(CheckAccessMixin, ModelView):
     }
 
     column_list = [
+        'active',
         'ip_range',
         'description',
         'created_at',
     ]
 
     form_columns = [
+        'active',
         'ip_range',
         'description',
         'created_at',
@@ -160,6 +178,14 @@ class IPRangeModelView(CheckAccessMixin, ModelView):
                     return False
 
         return super().validate_form(form)
+
+    @action('activate_ip_ranges', 'Activate', 'Selected IP ranges will be activated')
+    def activate(self, selected_ids):
+        change_active_status(IPRange, selected_ids, True)
+
+    @action('deactivate_ip_ranges', 'Deactivate', 'Selected IP ranges will be deactivated')
+    def deactivate(self, selected_ids):
+        change_active_status(IPRange, selected_ids, False)
 
 
 class APIPKeyModelView(CheckAccessMixin, ModelView):

@@ -87,6 +87,10 @@ class Record(db.Model):
         db.Integer,
         primary_key=True,
     )
+    active = db.Column(
+        db.Boolean(),
+        default=True,
+    )
     created_at = db.Column(
         db.DateTime,
         default=get_current_datatime,
@@ -129,6 +133,10 @@ class IPRange(db.Model):
     id = db.Column(
         db.Integer,
         primary_key=True,
+    )
+    active = db.Column(
+        db.Boolean(),
+        default=True,
     )
     created_at = db.Column(
         db.DateTime,

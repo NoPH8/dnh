@@ -84,6 +84,15 @@ class UserModelView(CheckAccessMixin, ModelView):
 class RecordModelView(CheckAccessMixin, ModelView):
     can_export = True
 
+    column_filters = [
+        'active',
+        'domain',
+        'description',
+        'ip_addresses',
+        'created_at',
+        'updated_at',
+    ]
+
     column_list = [
         'active',
         'domain',
@@ -148,6 +157,13 @@ class IPRangeModelView(CheckAccessMixin, ModelView):
     column_labels = {
         'ip_range': 'IP range'
     }
+
+    column_filters = [
+        'active',
+        'ip_range',
+        'description',
+        'created_at',
+    ]
 
     column_list = [
         'active',

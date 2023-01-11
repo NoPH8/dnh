@@ -38,9 +38,9 @@ class CheckAccessMixin:
 
 class UserModelView(CheckAccessMixin, ModelView):
     column_list = [
+        'active',
         'username',
         'roles',
-        'is_active',
         'created_at',
         'last_login_at',
     ]

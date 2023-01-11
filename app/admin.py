@@ -82,6 +82,8 @@ class UserModelView(CheckAccessMixin, ModelView):
 
 
 class RecordModelView(CheckAccessMixin, ModelView):
+    can_export = True
+
     column_list = [
         'active',
         'domain',
@@ -141,6 +143,8 @@ class RecordModelView(CheckAccessMixin, ModelView):
 
 
 class IPRangeModelView(CheckAccessMixin, ModelView):
+    can_export = True
+
     column_labels = {
         'ip_range': 'IP range'
     }

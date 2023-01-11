@@ -5,7 +5,7 @@ from flask_security import SQLAlchemySessionUserDatastore, Security
 
 from app.tools.utils import create_roles, create_tables
 from config import AppConfig
-from .admin import admin
+from .admin import app_admin
 from .database import db
 from .models import Role, User
 from .signals import connect_update_last_login_signal
@@ -25,7 +25,7 @@ def create_app(config_class=AppConfig):
     app.security = Security(app, user_datastore)
 
     # Flask admin initialization
-    admin.init_app(app)
+    app_admin.init_app(app)
 
     # Scheduler initialization
     app.scheduler = BackgroundScheduler()
@@ -34,8 +34,8 @@ def create_app(config_class=AppConfig):
     @app.security.context_processor
     def security_context_processor():
         return dict(
-            admin_base_template=admin.base_template,
-            admin_view=admin.index_view,
+            admin_base_template=app_admin.base_template,
+            admin_view=app_admin.index_view,
             h=admin_helpers,
             get_url=url_for
         )

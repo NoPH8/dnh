@@ -6,10 +6,15 @@ from flask_security import uia_username_mapper
 BASE_DIR = pathlib.Path(__file__).parent
 
 
+def str_to_list(value):
+    return [d for d in [s.strip() for s in value.split(' ')] if d]
+
+
 class AppConfig:
     # Common settings
     APP_NAME = config('APP_NAME', default='DNH')
-    DOMAIN_UPDATE_INTERVAL = config('DOMAIN_UPDATE_INTERVAL', cast=int, default=15)  # in minutes
+    DNS_SERVERS = config('DNS_SERVERS', cast=str_to_list, default='')
+    DNS_UPDATE_INTERVAL = config('DNS_UPDATE_INTERVAL', cast=int, default=15)  # in minutes
 
     # Database settings
     DB_NAME = config('DB_NAME', default='database.sqlite')

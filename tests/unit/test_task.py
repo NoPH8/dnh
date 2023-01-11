@@ -13,7 +13,9 @@ def test_update_domain_ip_task(mocker, monkeypatch, app, record):
     )
 
     m_answer = mocker.Mock(address='127.0.0.1')
-    monkeypatch.setattr('dns.resolver.resolve', lambda __: [m_answer])
+    m_resolver = mocker.Mock(name='MockResolver')
+    m_resolver().resolve.return_value = [m_answer]
+    monkeypatch.setattr('app.tools.network.get_dns_resolver', m_resolver)
 
     update_domain_ip_task(app)
 

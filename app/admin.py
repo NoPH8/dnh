@@ -235,12 +235,12 @@ class APIPKeyModelView(CheckAccessMixin, ModelView):
         return access_to_api_keys
 
 
-admin = flask_admin.Admin(
+app_admin = flask_admin.Admin(
     name=config('APP_NAME', default='DNH'),
     base_template='base_custom.html',
     template_mode='bootstrap4',
 )
-admin.add_view(UserModelView(User, db.session))
-admin.add_view(RecordModelView(Record, db.session))
-admin.add_view(IPRangeModelView(IPRange, db.session, name='IP range'))
-admin.add_view(APIPKeyModelView(APIKey, db.session, name='API keys'))
+app_admin.add_view(UserModelView(User, db.session))
+app_admin.add_view(RecordModelView(Record, db.session))
+app_admin.add_view(IPRangeModelView(IPRange, db.session, name='IP range'))
+app_admin.add_view(APIPKeyModelView(APIKey, db.session, name='API keys'))

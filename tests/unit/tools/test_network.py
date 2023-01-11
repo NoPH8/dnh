@@ -1,6 +1,7 @@
 import pytest
 
-from app.tools.network import (extract_domain, get_ip_addresses_str, is_ip_address_in_network,
+from app.tools.network import (extract_domain, get_dns_resolver, get_ip_addresses_str,
+                               is_ip_address_in_network,
                                validate_domain,
                                validate_ip_address,
                                validate_ip_range)
@@ -24,12 +25,40 @@ def test_extract_domain(value, expected):
     assert extract_domain(value) == expected
 
 
+@pytest.mark.parametrize('servers,default_resolver_check,resolver_check', [
+    ([], 'assert_called', 'assert_not_called'),
+    (['8.8.8.8'], 'assert_not_called', 'assert_called'),
+])
+def test_get_dns_resolver(
+        app,
+        mocker,
+        monkeypatch,
+        servers,
+        default_resolver_check,
+        resolver_check,
+):
+    m_get_default_resolver = mocker.Mock(name='Mock default resolver')
+    m_Resolver = mocker.Mock(name='Mock Resolver')
+    monkeypatch.setattr(
+        'app.tools.network.dns.resolver.get_default_resolver',
+        m_get_default_resolver,
+    )
+    monkeypatch.setattr('app.tools.network.dns.resolver.Resolver', m_Resolver)
+
+    app.config['DNS_SERVERS'] = servers
+
+    get_dns_resolver()
+    getattr(m_Resolver, resolver_check)()
+    getattr(m_get_default_resolver, default_resolver_check)()
+
+
 def test_get_ip_addresses_str(mocker, monkeypatch, record):
     record = record(domain='example.com')
-    m_answer = mocker.Mock(side_effect=ValueError('Network failure'))
+    m_resolver = mocker.Mock(name='MockResolver')
+    m_resolver().resolve.side_effect = ValueError('Network failure')
     m_logger = mocker.Mock()
 
-    monkeypatch.setattr('app.tools.network.dns.resolver.resolve', m_answer, raising=True)
+    monkeypatch.setattr('app.tools.network.get_dns_resolver', m_resolver)
     monkeypatch.setattr('app.tools.network.logger.exception', m_logger)
 
     result = get_ip_addresses_str(record)

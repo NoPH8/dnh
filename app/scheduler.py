@@ -11,5 +11,5 @@ def record(state):
         update_domain_ip_task,
         trigger='interval',
         args=[state.app],
-        minutes=state.app.config['DOMAIN_UPDATE_INTERVAL']
+        minutes=state.app.config['DNS_UPDATE_INTERVAL']
     )

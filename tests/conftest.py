@@ -3,6 +3,7 @@ from flask import current_app
 from flask_security import hash_password, login_user
 
 from app import Role, User, create_app
+from app.admin import app_admin
 from app.database import db as app_db
 from app.models import APIKey, IPRange, Record
 from config import AppConfigTesting
@@ -38,6 +39,14 @@ def runner(app):
 @pytest.fixture()
 def db(app):
     return app_db
+
+
+@pytest.fixture()
+def admin_view():
+    def _admin_view(admin_view_class):
+        return next(x for x in app_admin._views if isinstance(x, admin_view_class))
+
+    return _admin_view
 
 
 def create_instance(db_session, model_name, values: dict):

@@ -1,14 +1,6 @@
 import pytest
 
-from app.admin import CheckAccessMixin, IPRangeModelView, RecordModelView, admin
-
-
-@pytest.fixture()
-def admin_view():
-    def _admin_view(admin_view_class):
-        return next(x for x in admin._views if isinstance(x, admin_view_class))
-
-    return _admin_view
+from app.admin import CheckAccessMixin, IPRangeModelView, RecordModelView
 
 
 def test_check_access_mixin_get_access_permission():

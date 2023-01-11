@@ -60,7 +60,8 @@ def extract_domain(url_like_str: str) -> Optional[str]:
 
 def get_ip_addresses_str(record) -> str:
     try:
-        resolved = dns.resolver.resolve(record.domain)
+        resolver = get_dns_resolver()
+        resolved = resolver.resolve(record.domain)
     except Exception as exc:
         logger.exception(f'Unknown error {exc}')
         return record.ip_addresses
@@ -70,6 +71,19 @@ def get_ip_addresses_str(record) -> str:
     )
 
     return '; '.join(result)
+
+
+def get_dns_resolver():
+    from flask import current_app
+
+    dns_servers = current_app.config['DNS_SERVERS']
+    if not dns_servers:
+        return dns.resolver.get_default_resolver()
+
+    resolver = dns.resolver.Resolver(configure=False)
+    resolver.nameservers = dns_servers
+
+    return resolver
 
 
 def is_ip_address_in_network(ip_address: str, ip_network: str) -> bool:

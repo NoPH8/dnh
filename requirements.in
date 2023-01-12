@@ -1,5 +1,6 @@
 coverage
 flake8
+humanize
 Flask
 Flask-APScheduler
 flask-security-too[common]

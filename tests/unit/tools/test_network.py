@@ -1,3 +1,4 @@
+import dns
 import pytest
 
 from app.tools.network import (extract_domain, get_dns_resolver, get_ip_addresses_str,
@@ -52,14 +53,22 @@ def test_get_dns_resolver(
     getattr(m_get_default_resolver, default_resolver_check)()
 
 
-def test_get_ip_addresses_str(mocker, monkeypatch, record):
+@pytest.mark.parametrize('error_type,logger_method', [
+    (dns.resolver.LifetimeTimeout, 'error'),
+    (dns.resolver.NXDOMAIN, 'error'),
+    (dns.resolver.YXDOMAIN, 'error'),
+    (dns.resolver.NoNameservers, 'error'),
+    (dns.resolver.NoResolverConfiguration, 'error'),
+    (ValueError('Network failure'), 'exception'),
+])
+def test_get_ip_addresses_str_errors(mocker, monkeypatch, record, error_type, logger_method):
     record = record(domain='example.com')
     m_resolver = mocker.Mock(name='MockResolver')
-    m_resolver().resolve.side_effect = ValueError('Network failure')
+    m_resolver().resolve.side_effect = error_type
     m_logger = mocker.Mock()
 
     monkeypatch.setattr('app.tools.network.get_dns_resolver', m_resolver)
-    monkeypatch.setattr('app.tools.network.logger.exception', m_logger)
+    monkeypatch.setattr(f'flask.current_app.logger.{logger_method}', m_logger)
 
     result = get_ip_addresses_str(record)
 

@@ -1,0 +1,17 @@
+<div class="row">
+    <div class="col">
+        <h6>Uptime:</h6>
+        {{ dashboard.uptime }}
+    </div>
+</div>
+<div class="row" style="margin-top: 20px">
+    <div class="col">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h6>Last {{ dashboard.log_length }} log records from the app start:</h6></div>
+            {% for entry in dashboard.log %}
+                <div class="panel-body">{{ entry }}</div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+

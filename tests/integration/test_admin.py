@@ -120,3 +120,11 @@ def test_ip_range_delete(db, client, ip_range, user):
 
     assert response.status_code == HTTPStatus.FOUND
     assert db.session.execute(db.select(IPRange)).scalar() is None
+
+
+def test_dashboard_index_view(client, user):
+    user(is_auth=True)
+
+    response = client.get('admin/')
+    assert response.status_code == HTTPStatus.OK
+    assert 'Uptime' in response.text

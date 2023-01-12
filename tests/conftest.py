@@ -43,7 +43,7 @@ def db(app):
 
 @pytest.fixture()
 def admin_view():
-    def _admin_view(admin_view_class):
+    def _admin_view(admin_view_class):  # pragma: no cover
         return next(x for x in app_admin._views if isinstance(x, admin_view_class))
 
     return _admin_view

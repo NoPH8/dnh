@@ -1,6 +1,7 @@
 import flask_admin
 from decouple import config
-from flask import redirect, url_for
+from flask import current_app, redirect, url_for
+from flask_admin import AdminIndexView, expose
 from flask_admin.actions import action
 from flask_admin.contrib.sqla import ModelView
 from flask_principal import PermissionDenied
@@ -140,6 +141,8 @@ class RecordModelView(CheckAccessMixin, ModelView):
         return super().validate_form(form)
 
     def on_model_change(self, form, model, is_created):
+        model.ip_addresses = None
+        model.updated_at = None
         model.update_ip_addresses()
 
     @action('activate_records', 'Activate', 'Selected records will be activated')
@@ -235,10 +238,17 @@ class APIPKeyModelView(CheckAccessMixin, ModelView):
         return access_to_api_keys
 
 
+class DashboardIndexView(AdminIndexView):
+    @expose('/')
+    def index(self):
+        return self.render('admin/index.html', dashboard=current_app.dashboard)
+
+
 app_admin = flask_admin.Admin(
     name=config('APP_NAME', default='DNH'),
     base_template='base_custom.html',
     template_mode='bootstrap4',
+    index_view=DashboardIndexView(),
 )
 app_admin.add_view(UserModelView(User, db.session))
 app_admin.add_view(RecordModelView(Record, db.session))

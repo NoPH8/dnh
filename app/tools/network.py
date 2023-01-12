@@ -1,12 +1,9 @@
 import ipaddress
-import logging
 import re
 from typing import Optional
 
 import dns
-
-logger = logging.getLogger(__name__)
-
+from flask import current_app
 
 # Via https://github.com/django/django/blob/main/django/core/validators.py
 ul = "\u00a1-\uffff"  # Unicode letters range (must not be a raw string).
@@ -62,15 +59,23 @@ def get_ip_addresses_str(record) -> str:
     try:
         resolver = get_dns_resolver()
         resolved = resolver.resolve(record.domain)
+    except dns.resolver.LifetimeTimeout:
+        current_app.logger.error('No answers could be found in the specified lifetime')
+    except dns.resolver.NXDOMAIN:
+        current_app.logger.error(f'Domain `{record.domain}` name does not exists')
+    except dns.resolver.YXDOMAIN:
+        current_app.logger.error(f'`{record.domain}` name is too long after DNAME substitution')
+    except (dns.resolver.NoNameservers, dns.resolver.NoResolverConfiguration):
+        current_app.logger.error('Nameservers are unavailable')
     except Exception as exc:
-        logger.exception(f'Unknown error {exc}')
-        return record.ip_addresses
+        current_app.logger.exception(f'Unknown error {exc}')
+    else:
+        result = (
+            sorted([elem.address for elem in resolved if validate_ip_address(elem.address)])
+        )
+        return '; '.join(result)
 
-    result = (
-        sorted([elem.address for elem in resolved if validate_ip_address(elem.address)])
-    )
-
-    return '; '.join(result)
+    return record.ip_addresses
 
 
 def get_dns_resolver():

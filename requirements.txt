@@ -59,6 +59,8 @@ flask-wtf==1.0.1
     # via flask-security-too
 greenlet==2.0.1
     # via sqlalchemy
+humanize==4.4.0
+    # via -r requirements.in
 idna==3.4
     # via email-validator
 iniconfig==2.0.0

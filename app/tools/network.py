@@ -55,7 +55,7 @@ def extract_domain(url_like_str: str) -> Optional[str]:
     return extractor(url_like_str)
 
 
-def get_ip_addresses_str(record) -> str:
+def get_ip_addresses_str(record) -> str:  # noqa:C901
     try:
         resolver = get_dns_resolver()
         resolved = resolver.resolve(record.domain)

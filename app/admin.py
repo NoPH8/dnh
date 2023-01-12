@@ -241,7 +241,11 @@ class APIPKeyModelView(CheckAccessMixin, ModelView):
 class DashboardIndexView(AdminIndexView):
     @expose('/')
     def index(self):
-        return self.render('admin/index.html', dashboard=current_app.dashboard)
+        return self.render(
+            'admin/index.html',
+            dashboard=current_app.dashboard,
+            custom_meta='<meta http-equiv="refresh" content="10">',
+        )
 
 
 app_admin = flask_admin.Admin(

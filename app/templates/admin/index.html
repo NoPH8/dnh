@@ -1,4 +1,12 @@
 {% extends 'admin/master.html' %}
+
+{% block head_meta %}
+{{ super() }}
+{% if custom_meta %}
+{{ custom_meta|safe  }}
+{% endif %}
+{% endblock %}
+
 {% block body %}
     {{ super() }}
     <div class="container">

@@ -37,3 +37,6 @@ Usage
 --------
 
 Create admin-user using ``flask manage createsuperuser`` then login to ``/admin/``.
+Add necessary records with domain names and IP range network.
+Create APIKey and use it for API endpoint as shown below:
+``/api/v1/ip_list?api_key=your_generated_api_key``

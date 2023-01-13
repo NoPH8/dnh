@@ -8,11 +8,18 @@ VPN domain name helper
 What is this?
 --------
 This is the simple helper for VPN-routing.
-You can add domain-names and custom ip-range networks to route through the VPN and get all the list in API endpoint.
+You can add domain-names and custom ip-range networks to route through the VPN and
+get all the list in API endpoint.
 
 Installation & configuration
 --------
-You need to specify .env-file to run the app. There is a template to use as an example.
+Application can run directly or via docker image.
+Edit docker-compose.yml if you need additional configuration.
+
+You need to specify .env-file to run the app.
+The default name of .env-file for dockerized app is .env_docker.
+
+There is a template to use as an example.
 All possible parameters are in the table below.
 
 +------------------------+----------+-----------------+-----------------------------------------+
@@ -25,6 +32,8 @@ All possible parameters are in the table below.
 +------------------------+----------+-----------------+-----------------------------------------+
 | DNS_UPDATE_INTERVAL    | No       | 15              | It shows update interval in minutes.    |
 +------------------------+----------+-----------------+-----------------------------------------+
+| DB_PATH                | No       | {App directory} | Absolute path to directory with sqlite  |
++------------------------+----------+-----------------+-----------------------------------------+
 | DB_NAME                | No       | database.sqlite | SQLite database name                    |
 +------------------------+----------+-----------------+-----------------------------------------+
 | SECRET_KEY             | Yes      |                 | Secret key for Flask-security purposes. |
@@ -34,7 +43,8 @@ All possible parameters are in the table below.
 |                        |          |                 | See note below the table                |
 +------------------------+----------+-----------------+-----------------------------------------+
 
-To create 'SECRET_KEY' and 'SECURITY_PASSWORD_SALT' values you can use pre-installed make-helpers (feel free to use different make-commands: just type `make help` to see all possible commands).
+To create 'SECRET_KEY' and 'SECURITY_PASSWORD_SALT' values you can use pre-installed make-helpers
+(feel free to use different make-commands: just type `make help` to see all possible commands).
 
 Usage
 --------

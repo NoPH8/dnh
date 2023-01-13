@@ -15,7 +15,7 @@ from .signals import connect_update_last_login_signal
 from .tools.json import JSONProvider
 
 
-def create_app(config_class=AppConfig):
+def create_app(config_class=AppConfig, *args, **kwargs):
     app = Flask(__name__)
     app.config.from_object(config_class)
     app.json_provider_class = JSONProvider

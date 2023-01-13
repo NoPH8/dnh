@@ -1,0 +1,27 @@
+version: '3.4'
+
+x-restart-policy: &restart_policy
+  restart: 'no'
+
+x-flask-defaults: &flask_defaults
+  <<: *restart_policy
+  environment:
+    - FLASK_DEBUG=false
+  env_file: .env_docker
+  image: dnh_flask
+  volumes:
+    - "./local-db:/srv/app/local-db"
+
+services:
+  flask:
+    <<: *flask_defaults
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        ENVIRONMENT: production
+    command: '/start'
+    container_name: dnh_flask
+    hostname: dnh_flask
+    ports:
+      - '5000:5000'

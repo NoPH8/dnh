@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# configure for your production server
+# https://docs.gunicorn.org/en/latest/settings.html#worker-processes
+gunicorn "app:create_app()" \
+  -b 0.0.0.0:5000 \
+  --timeout 90 \
+  --log-file=- \
+  --worker-tmp-dir='/dev/shm'

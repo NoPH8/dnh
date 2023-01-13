@@ -1,5 +1,6 @@
-/.env
+/.env*
 /database.sqlite*
+/local-db/*
 /.coverage
 /venv
 /.venv

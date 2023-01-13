@@ -5,10 +5,11 @@ Flask-APScheduler
 flask-security-too[common]
 Flask-SQLAlchemy
 flask_admin
+gunicorn
+humanize
 humanize
 isort[requirements_deprecated_finder]
 pre-commit
-pycairo
 pyflakes
 pytest
 pytest-cov

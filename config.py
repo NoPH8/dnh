@@ -18,8 +18,9 @@ class AppConfig:
 
     # Database settings
     DB_NAME = config('DB_NAME', default='database.sqlite')
-    DB_PATH = pathlib.Path.joinpath(BASE_DIR, DB_NAME)
-    SQLALCHEMY_DATABASE_URI = f'sqlite:///{DB_PATH}'
+    DB_PATH = config('DB_PATH', cast=pathlib.Path, default=BASE_DIR)
+    DB_FULL_PATH = pathlib.Path.joinpath(DB_PATH, DB_NAME)
+    SQLALCHEMY_DATABASE_URI = f'sqlite:///{DB_FULL_PATH}'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # Flask admin settings
@@ -48,8 +49,9 @@ class AppConfig:
 
 class AppConfigTesting(AppConfig):
     DB_NAME = 'database.sqlite.test'
-    DB_PATH = pathlib.Path.joinpath(BASE_DIR, DB_NAME)
-    SQLALCHEMY_DATABASE_URI = f'sqlite:///{DB_PATH}'
+    DB_PATH = BASE_DIR
+    DB_FULL_PATH = pathlib.Path.joinpath(DB_PATH, DB_NAME)
+    SQLALCHEMY_DATABASE_URI = f'sqlite:///{DB_FULL_PATH}'
 
     SECURITY_PASSWORD_HASH = 'plaintext'
 

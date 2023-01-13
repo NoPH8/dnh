@@ -1,0 +1,54 @@
+# virtual environments
+.venv
+venv
+
+# Python files
+**/*.pyc
+**/__pycache__/
+
+**/.pytest_cache/
+**/.ipython/
+**/.idea/
+**/.github/
+
+# Python Notebook dot files
+**/.ipynb*
+
+# Secret environment settings
+.env
+.env*
+env
+env.*
+
+# Node and Webpack files
+node_modules
+npm-debug.log
+webpack-stats*
+
+# Static assests
+staticfiles
+media
+
+# Ignore sqlite
+*.sqlite
+*.sqlite.test
+local-db/
+
+# Ignore sql files
+*.sql
+
+# Apple files
+**/.DS_Store
+
+.git
+.pre-commit-config.yaml
+**/.directory
+**/*~
+
+.cache
+.coverage
+README.*
+test.*
+
+
+docker-compose.*ml

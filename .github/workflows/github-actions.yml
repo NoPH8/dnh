@@ -19,7 +19,8 @@ jobs:
       - name: Prepare
         run: |
           cp .env.ci .env &&
-          pip install -r requirements.txt
+          pip install -r requirements.txt &&
+          pip install pycairo
 
       - name: Run check and test
         run: make check && make lint && make tests

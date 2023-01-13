@@ -8,6 +8,7 @@ flask_admin
 humanize
 isort[requirements_deprecated_finder]
 pre-commit
+pycairo
 pyflakes
 pytest
 pytest-cov

@@ -103,6 +103,8 @@ pluggy==1.0.0
     # via pytest
 pre-commit==2.21.0
     # via -r requirements.in
+pycairo==1.23.0
+    # via -r requirements.in
 pycodestyle==2.10.0
     # via flake8
 pyflakes==3.0.1

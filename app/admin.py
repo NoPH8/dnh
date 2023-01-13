@@ -32,7 +32,7 @@ class CheckAccessMixin:
     def get_access_permission():
         raise NotImplementedError('Specify permission explicitly')
 
-    def _handle_view(self, name):
+    def _handle_view(self, *args, **kwargs):
         if not self.is_accessible():
             return redirect(url_for('security.login'))
 

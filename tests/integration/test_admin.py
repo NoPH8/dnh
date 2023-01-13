@@ -52,6 +52,19 @@ def test_user_update(user, client, new_password, expected_password):
     assert target_user.verify_and_update_password(expected_password)
 
 
+@pytest.mark.parametrize('url_part,expected_mime', [
+    ('', 'text/html'),
+    ('export/csv/', 'text/csv'),
+])
+def test_record_list(db, client, user, record, url_part, expected_mime):
+    user(is_auth=True)
+
+    response = client.get(f'admin/record/{url_part}')
+
+    assert response.status_code == HTTPStatus.OK
+    assert response.mimetype == expected_mime
+
+
 @pytest.mark.parametrize('domain_value,expected', [
     ('https://example.com', 'example.com'),
     ('example.com', 'example.com'),
@@ -87,6 +100,19 @@ def test_record_delete(db, client, record, user):
 
     assert response.status_code == HTTPStatus.FOUND
     assert db.session.execute(db.select(Record)).scalar() is None
+
+
+@pytest.mark.parametrize('url_part,expected_mime', [
+    ('', 'text/html'),
+    ('export/csv/', 'text/csv'),
+])
+def test_ip_range_list(db, client, user, record, url_part, expected_mime):
+    user(is_auth=True)
+
+    response = client.get(f'admin/iprange/{url_part}')
+
+    assert response.status_code == HTTPStatus.OK
+    assert response.mimetype == expected_mime
 
 
 def test_ip_range_create_success(db, client, user):

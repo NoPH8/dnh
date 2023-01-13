@@ -1,6 +1,10 @@
 name: Check and tests
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: [push]
+
+env:
+  CODECOV_TOKEN: 1a09261f-bcee-4628-bd86-9c67ccdd56c2
+
 jobs:
   # Label of the runner job
   runner-job:
@@ -17,8 +21,8 @@ jobs:
           cp .env.ci .env &&
           pip install -r requirements.txt
 
-      - name: Run check
-        run: make check && make lint
+      - name: Run check and test
+        run: make check && make lint && make tests
 
       - name: Code coverage
         run: |

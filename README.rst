@@ -2,6 +2,9 @@
 VPN domain name helper
 ====
 
+.. image:: https://codecov.io/gh/NoPH8/dnh/branch/master/graph/badge.svg?token=C8GfOv84Bu
+ :target: https://codecov.io/gh/NoPH8/dnh
+
 What is this?
 --------
 This is the simple helper for VPN-routing.

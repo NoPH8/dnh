@@ -1,10 +1,11 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, url_for
 from flask_admin import helpers as admin_helpers
-from flask_security import SQLAlchemySessionUserDatastore, Security
+from flask_security import Security, SQLAlchemySessionUserDatastore
 
 from app.tools.utils import create_roles, create_tables
 from config import AppConfig
+
 from .admin import app_admin
 from .dashboard import Dashboard
 from .database import db

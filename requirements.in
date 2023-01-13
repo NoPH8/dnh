@@ -1,11 +1,15 @@
 coverage
 flake8
-humanize
 Flask
 Flask-APScheduler
 flask-security-too[common]
 Flask-SQLAlchemy
 flask_admin
+humanize
+isort[requirements_deprecated_finder]
+pre-commit
+pycairo
+pyflakes
 pytest
 pytest-cov
 pytest-mock

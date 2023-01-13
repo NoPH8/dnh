@@ -1,10 +1,9 @@
 import dns
 import pytest
 
-from app.tools.network import (extract_domain, get_dns_resolver, get_ip_addresses_str,
-                               is_ip_address_in_network,
-                               validate_domain,
-                               validate_ip_address,
+from app.tools.network import (extract_domain, get_dns_resolver,
+                               get_ip_addresses_str, is_ip_address_in_network,
+                               validate_domain, validate_ip_address,
                                validate_ip_range)
 
 

@@ -1,8 +1,6 @@
-import datetime
-
 import flask
 
-from app import db
+from app import dashboard, db
 from app.models import Record
 
 
@@ -12,5 +10,5 @@ def update_domain_ip_task(app: flask.Flask):
             if record.update_ip_addresses():
                 db.session.add(record)
 
-        app.dashboard._records_last_updated_at = datetime.datetime.now()
         db.session.commit()
+        dashboard.refresh_records_last_updated_at_value()

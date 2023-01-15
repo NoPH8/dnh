@@ -5,6 +5,26 @@ import pytest
 from app.models import IPRange, Record
 
 
+def test_user_change_password(app, user, client):
+    app.config['WTF_CSRF_ENABLED'] = False
+    password = 'SecretPassword'
+    new_password = 'UpdatedSecretPassword'
+    user = user(is_auth=True, password=password)
+
+    response = client.post(
+        'admin/change-password/',
+        data={
+            'password': password,
+            'new_password': new_password,
+            'new_password_confirm': new_password,
+            'submit': 'Change Password',
+        }
+    )
+
+    assert response.status_code == HTTPStatus.FOUND
+    assert user.verify_and_update_password(new_password)
+
+
 def test_user_login(user, client):
     username = 'admin'
     password = 'SecretPassword'
@@ -12,6 +32,15 @@ def test_user_login(user, client):
     response = client.post('admin/login/', data={'username': username, 'password': password})
 
     assert response.status_code == HTTPStatus.OK
+
+
+def test_user_logout(user, client):
+    user(is_auth=True)
+    client.post('admin/logout/')
+    response = client.get('admin/')
+
+    assert response.status_code == HTTPStatus.OK
+    assert 'Log in' in response.text
 
 
 @pytest.mark.parametrize('is_auth,expected', [
@@ -38,7 +67,7 @@ def test_user_create(user, client, password, expected, error):
 
 
 @pytest.mark.parametrize('new_password,expected_password', [
-    # ('new_password', 'new_password'),
+    ('new_password', 'new_password'),
     ('', 'old_password'),
 ])
 def test_user_update(user, client, new_password, expected_password):

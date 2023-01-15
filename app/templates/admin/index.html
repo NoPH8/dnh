@@ -1,10 +1,7 @@
 {% extends 'admin/master.html' %}
-
-{% block head_meta %}
+{% block head %}
 {{ super() }}
-{% if custom_meta %}
-{{ custom_meta|safe  }}
-{% endif %}
+{{ turbo() }}
 {% endblock %}
 
 {% block body %}
@@ -20,6 +17,12 @@
                     </script>
                 {% else %}
                     <div>
+                        <div class="row">
+                            <div class="col">
+                                <h6>Uptime:</h6>
+                                <time class="uptime" datetime="{{ dashboard.started }}"></time>
+                            </div>
+                        </div>
                         {% include "admin/dashboard.html" %}
                     </div>
                 {% endif %}

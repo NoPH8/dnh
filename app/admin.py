@@ -244,7 +244,6 @@ class DashboardIndexView(AdminIndexView):
         return self.render(
             'admin/index.html',
             dashboard=current_app.dashboard,
-            custom_meta='<meta http-equiv="refresh" content="10">',
         )
 
 

@@ -1,7 +1,7 @@
 import flask_admin
 from decouple import config
-from flask import current_app, redirect, url_for
-from flask_admin import AdminIndexView, expose
+from flask import redirect, url_for
+from flask_admin import AdminIndexView
 from flask_admin.actions import action
 from flask_admin.contrib.sqla import ModelView
 from flask_principal import PermissionDenied
@@ -239,12 +239,10 @@ class APIPKeyModelView(CheckAccessMixin, ModelView):
 
 
 class DashboardIndexView(AdminIndexView):
-    @expose('/')
-    def index(self):
-        return self.render(
-            'admin/index.html',
-            dashboard=current_app.dashboard,
-        )
+    extra_js = [
+        '/static/js/admin/jquery.timeago.min.js',
+        '/static/js/admin/uptime.js',
+    ]
 
 
 app_admin = flask_admin.Admin(

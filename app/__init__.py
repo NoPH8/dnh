@@ -7,9 +7,8 @@ from app.tools.utils import create_roles, create_tables
 from config import AppConfig
 
 from .admin import app_admin
-from .dashboard import Dashboard
+from .dashboard import dashboard, turbo
 from .database import db
-from .logging import dashboard_handler
 from .models import Role, User
 from .signals import connect_update_last_login_signal
 from .tools.json import JSONProvider
@@ -35,8 +34,8 @@ def create_app(config_class=AppConfig, *args, **kwargs):
     app.scheduler.start()
 
     # Dashboard initialization
-    app.dashboard = Dashboard()
-    app.logger.addHandler(dashboard_handler)
+    turbo.init_app(app)
+    dashboard.init_app(app)
 
     @app.security.context_processor
     def security_context_processor():

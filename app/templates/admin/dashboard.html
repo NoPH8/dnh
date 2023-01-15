@@ -1,23 +1,21 @@
-<div class="row">
-    <div class="col">
-        <h6>Uptime:</h6>
-        {{ dashboard.uptime }}
+<div id="dashboard">
+    <div class="row" style="margin-top: 20px">
+        <div class="col">
+            <h6>Last DNS update:</h6>
+            {{ dashboard.records_last_updated_at }}
+        </div>
+        <div class="col">
+            <h6>Update interval (minutes):</h6>
+            {{ dashboard.update_interval }}
+        </div>
     </div>
-    <div class="col">
-        <h6>Last update:</h6>
-        {{ dashboard.records_last_updated_at }}
-    </div>
-    <div class="col">
-        <h6>Next update:</h6>
-        {{ dashboard.records_next_updated_at }}
-    </div>
-</div>
-<div class="row" style="margin-top: 20px">
-    <div class="col">
-        <div class="panel panel-default">
-            <div class="panel-heading"><h6>Last {{ dashboard.log_length }} log records from the app start:</h6></div>
+    <div class="row" style="margin-top: 20px">
+        <div class="col">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h6>Last {{ dashboard.log_length }} log records from the app start:</h6></div>
+            </div>
             {% for entry in dashboard.log %}
-                <div class="panel-body">{{ entry }}</div>
+                <div class="panel-body .col-2">{{ entry }}</div>
             {% endfor %}
         </div>
     </div>

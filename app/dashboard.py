@@ -1,18 +1,21 @@
-import dataclasses
 import datetime
 from functools import cached_property
 from typing import Optional
 
-import humanize
-from flask import current_app
+from flask import current_app, render_template
+from turbo_flask import Turbo
 
-from app.logging import FIFOTemporaryStream
+from app.logging import FIFOTemporaryStream, dashboard_handler
+
+turbo = Turbo()
 
 
-@dataclasses.dataclass()
 class Dashboard:
     started = datetime.datetime.now()
     _records_last_updated_at: Optional[datetime.datetime] = None
+
+    def __init__(self, app=None):
+        self.app = app
 
     @property
     def log(self):
@@ -31,18 +34,35 @@ class Dashboard:
 
     @property
     def records_last_updated_at(self):
-        return self._records_last_updated_at.strftime('%d-%m-%Y %H:%M:%S') or 'Unknown'
-
-    @property
-    def records_next_updated_at(self):
         return (
-            humanize.naturaltime(
-                self._records_last_updated_at +
-                datetime.timedelta(minutes=current_app.config['DNS_UPDATE_INTERVAL'])
-            )
-            if self._records_last_updated_at else 'Unknown'
+            self._records_last_updated_at.strftime('%d-%m-%Y %H:%M:%S')
+            if self._records_last_updated_at
+            else 'Unknown'
         )
 
     @property
-    def uptime(self):
-        return humanize.naturaldelta(datetime.datetime.now() - self.started)
+    def update_interval(self):
+        return current_app.config["DNS_UPDATE_INTERVAL"]
+
+    def init_app(self, app):
+        self.app = app
+        app.logger.addHandler(dashboard_handler)
+
+        @app.context_processor
+        def inject_dashboard():
+            return {'dashboard': self}
+
+    def update_dashboard(self):
+        with self.app.app_context():
+            turbo.push(
+                turbo.replace(
+                    render_template('admin/dashboard.html'),
+                    'dashboard')
+            )
+
+    def refresh_records_last_updated_at_value(self):
+        self._records_last_updated_at = datetime.datetime.now()
+        self.update_dashboard()
+
+
+dashboard = Dashboard()

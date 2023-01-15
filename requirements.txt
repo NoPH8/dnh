@@ -16,10 +16,14 @@ blinker==1.5
     # via
     #   flask-principal
     #   flask-security-too
+build==0.10.0
+    # via pip-tools
 cfgv==3.3.1
     # via pre-commit
 click==8.1.3
-    # via flask
+    # via
+    #   flask
+    #   pip-tools
 coverage[toml]==7.0.5
     # via
     #   -r requirements.in
@@ -45,8 +49,10 @@ flask==2.2.2
     #   flask-mailman
     #   flask-principal
     #   flask-security-too
+    #   flask-sock
     #   flask-sqlalchemy
     #   flask-wtf
+    #   turbo-flask
 flask-admin==1.6.0
     # via -r requirements.in
 flask-apscheduler==1.12.4
@@ -59,6 +65,8 @@ flask-principal==0.4.0
     # via flask-security-too
 flask-security-too[common]==5.0.2
     # via -r requirements.in
+flask-sock==0.6.0
+    # via turbo-flask
 flask-sqlalchemy==3.0.2
     # via -r requirements.in
 flask-wtf==1.0.1
@@ -67,6 +75,8 @@ greenlet==2.0.1
     # via sqlalchemy
 gunicorn==20.1.0
     # via -r requirements.in
+h11==0.14.0
+    # via wsproto
 humanize==4.4.0
     # via -r requirements.in
 identify==2.5.13
@@ -96,9 +106,13 @@ mkdocs-material-extensions==1.1.1
 nodeenv==1.7.0
     # via pre-commit
 packaging==23.0
-    # via pytest
+    # via
+    #   build
+    #   pytest
 passlib==1.7.4
     # via flask-security-too
+pip-tools==6.12.1
+    # via -r requirements.in
 platformdirs==2.6.2
     # via virtualenv
 pluggy==1.0.0
@@ -111,6 +125,8 @@ pyflakes==3.0.1
     # via
     #   -r requirements.in
     #   flake8
+pyproject-hooks==1.0.0
+    # via build
 pytest==7.2.0
     # via
     #   -r requirements.in
@@ -133,6 +149,8 @@ pytz-deprecation-shim==0.1.0.post0
     # via tzlocal
 pyyaml==6.0
     # via pre-commit
+simple-websocket==0.9.0
+    # via flask-sock
 six==1.16.0
     # via
     #   apscheduler
@@ -142,8 +160,12 @@ sqlalchemy==1.4.46
     # via flask-sqlalchemy
 tomli==2.0.1
     # via
+    #   build
     #   coverage
+    #   pyproject-hooks
     #   pytest
+turbo-flask==0.8.3
+    # via -r requirements.in
 tzdata==2022.7
     # via pytz-deprecation-shim
 tzlocal==4.2
@@ -156,6 +178,10 @@ werkzeug==2.2.2
     # via
     #   flask
     #   flask-login
+wheel==0.38.4
+    # via pip-tools
+wsproto==1.2.0
+    # via simple-websocket
 wtforms==3.0.1
     # via
     #   flask-admin
@@ -163,4 +189,5 @@ wtforms==3.0.1
     #   flask-wtf
 
 # The following packages are considered to be unsafe in a requirements file:
+# pip
 # setuptools

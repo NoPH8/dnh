@@ -11,7 +11,7 @@ This is the simple helper for VPN-routing.
 You can add domain-names and custom ip-range networks to route through the VPN and
 get all the list in API endpoint.
 
-Installation & configuration
+Deployment & configuration
 --------
 Application can run directly or via docker image.
 Edit docker-compose.yml if you need additional configuration.
@@ -53,3 +53,7 @@ Create admin-user using ``flask manage createsuperuser`` then login to ``/admin/
 Add necessary records with domain names and IP range network.
 Create APIKey and use it for API endpoint as shown below:
 ``/api/v1/ip_list?api_key=your_generated_api_key``
+
+The example OpenWRT WireGuard configuration:
+
+- Openwrt 21.x: https://gist.github.com/NoPH8/14d636e8bd150815eff02e6917f1743a

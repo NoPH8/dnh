@@ -1,4 +1,5 @@
 import datetime
+import zoneinfo
 from functools import cached_property
 from typing import Optional
 
@@ -6,13 +7,15 @@ from flask import current_app, render_template
 from turbo_flask import Turbo
 
 from app.logging import FIFOTemporaryStream, dashboard_handler
+from config import AppConfig
 
 turbo = Turbo()
+tz = zoneinfo.ZoneInfo(AppConfig.TIMEZONE)
 
 
 class Dashboard:
-    started = datetime.datetime.now()
-    _records_last_updated_at: Optional[datetime.datetime] = None
+    started = datetime.datetime.now(tz=tz)
+    records_last_updated_at: Optional[datetime.datetime] = None
 
     def __init__(self, app=None):
         self.app = app
@@ -31,14 +34,6 @@ class Dashboard:
             x for x in current_app.logger.handlers if isinstance(x.stream, FIFOTemporaryStream)
         )
         return handler.stream
-
-    @property
-    def records_last_updated_at(self):
-        return (
-            self._records_last_updated_at.strftime('%d-%m-%Y %H:%M:%S')
-            if self._records_last_updated_at
-            else 'Unknown'
-        )
 
     @property
     def update_interval(self):
@@ -61,7 +56,7 @@ class Dashboard:
             )
 
     def refresh_records_last_updated_at_value(self):
-        self._records_last_updated_at = datetime.datetime.now()
+        self.records_last_updated_at = datetime.datetime.now(tz=tz)
         self.update_dashboard()
 
 

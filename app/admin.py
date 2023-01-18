@@ -1,5 +1,4 @@
 import flask_admin
-from decouple import config
 from flask import redirect, url_for
 from flask_admin import AdminIndexView
 from flask_admin.actions import action
@@ -7,6 +6,8 @@ from flask_admin.contrib.sqla import ModelView
 from flask_principal import PermissionDenied
 from flask_security import current_user
 from wtforms import PasswordField, ValidationError
+
+from config import AppConfig
 
 from .database import db
 from .models import APIKey, IPRange, Record, User
@@ -246,7 +247,7 @@ class DashboardIndexView(AdminIndexView):
 
 
 app_admin = flask_admin.Admin(
-    name=config('APP_NAME', default='DNH'),
+    name=AppConfig.APP_NAME,
     base_template='base_custom.html',
     template_mode='bootstrap4',
     index_view=DashboardIndexView(),

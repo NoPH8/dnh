@@ -13,6 +13,7 @@ def str_to_list(value):
 class AppConfig:
     # Common settings
     APP_NAME = config('APP_NAME', default='DNH')
+    TIMEZONE = config('TIMEZONE', default='UTC')
     DNS_SERVERS = config('DNS_SERVERS', cast=str_to_list, default='')
     DNS_UPDATE_INTERVAL = config('DNS_UPDATE_INTERVAL', cast=int, default=15)  # in minutes
 

@@ -2,7 +2,11 @@
     <div class="row" style="margin-top: 20px">
         <div class="col">
             <h6>Last DNS update:</h6>
-            {{ dashboard.records_last_updated_at }}
+            {% if dashboard.records_last_updated_at %}
+                {{ dashboard.records_last_updated_at.strftime('%Y-%m-%d, %H:%M:%S') }}
+            {% else %}
+                Unknown
+            {% endif %}
         </div>
         <div class="col">
             <h6>Update interval (minutes):</h6>

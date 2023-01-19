@@ -77,8 +77,6 @@ gunicorn==20.1.0
     # via -r requirements.in
 h11==0.14.0
     # via wsproto
-humanize==4.4.0
-    # via -r requirements.in
 identify==2.5.13
     # via pre-commit
 idna==3.4

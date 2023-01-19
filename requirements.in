@@ -6,7 +6,6 @@ flask-security-too[common]
 Flask-SQLAlchemy
 flask_admin
 gunicorn
-humanize
 isort[requirements_deprecated_finder]
 pip-tools
 pre-commit

@@ -1,5 +1,5 @@
-name: Check and tests
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+name: Linters checks, tests and coverage
+run-name: Check and tests
 on: [push]
 
 env:

@@ -1,8 +1,10 @@
 import datetime
 
+from flask import current_app
 from flask_security import RoleMixin, UserMixin, hash_password
 
 from app.database import db
+from app.tools.datetime import apply_timezone
 from app.tools.network import get_ip_addresses_str
 from app.tools.utils import get_current_datatime, get_unique_uuid
 
@@ -122,7 +124,11 @@ class Record(db.Model):
 
         if self.ip_addresses != ip_addresses:
             self.ip_addresses = ip_addresses
-            self.updated_at = datetime.datetime.now()
+            self.updated_at = apply_timezone(
+                datetime.datetime.now(),
+                current_app.config['TIMEZONE'],
+                'UTC',
+            )
 
             return True
 

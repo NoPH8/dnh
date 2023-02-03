@@ -13,7 +13,10 @@ def str_to_list(value):
 class AppConfig:
     # Common settings
     APP_NAME = config('APP_NAME', default='DNH')
+
     TIMEZONE = config('TIMEZONE', default='UTC')
+    DATETIME_FORMAT = config('DATETIME_FORMAT', default='%Y-%m-%d %H:%M:%S')
+
     DNS_SERVERS = config('DNS_SERVERS', cast=str_to_list, default='')
     DNS_UPDATE_INTERVAL = config('DNS_UPDATE_INTERVAL', cast=int, default=15)  # in minutes
 
@@ -53,6 +56,9 @@ class AppConfigTesting(AppConfig):
     DB_PATH = BASE_DIR
     DB_FULL_PATH = pathlib.Path.joinpath(DB_PATH, DB_NAME)
     SQLALCHEMY_DATABASE_URI = f'sqlite:///{DB_FULL_PATH}'
+
+    TIMEZONE = 'UTC'
+    DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
     SECURITY_PASSWORD_HASH = 'plaintext'
 

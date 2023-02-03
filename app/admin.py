@@ -1,5 +1,7 @@
+from typing import Iterable, Optional
+
 import flask_admin
-from flask import redirect, url_for
+from flask import current_app, redirect, url_for
 from flask_admin import AdminIndexView
 from flask_admin.actions import action
 from flask_admin.contrib.sqla import ModelView
@@ -10,8 +12,10 @@ from wtforms import PasswordField, ValidationError
 from config import AppConfig
 
 from .database import db
+from .formatters import format_datetime_with_tz
 from .models import APIKey, IPRange, Record, User
 from .permissions import access_to_api_keys, access_to_records, access_to_users
+from .tools.datetime import apply_timezone
 from .tools.network import extract_domain, validate_domain, validate_ip_range
 
 
@@ -38,7 +42,40 @@ class CheckAccessMixin:
             return redirect(url_for('security.login'))
 
 
-class UserModelView(CheckAccessMixin, ModelView):
+class TimeZoneMixin:
+    datetime_fields: Optional[Iterable] = None
+    column_formatters: dict
+
+    def __init__(self, *args, **kwargs):
+        self.datetime_fields = self.datetime_fields or []
+
+        for field_name in self.datetime_fields:
+            self.column_formatters[field_name] = format_datetime_with_tz
+
+        super().__init__(*args, **kwargs)
+
+    def edit_form(self, obj):
+        form = super().edit_form(obj)
+
+        for field_name in self.datetime_fields:
+            if field := getattr(form, field_name, None):
+                field.data = apply_timezone(field.data, 'UTC', current_app.config['TIMEZONE'])
+
+        return form
+
+    def on_model_change(self, form, instance, is_created):
+        for field_name in self.datetime_fields:
+            if field := getattr(form, field_name, None):
+                if local_time := field.data:
+                    utc_time = apply_timezone(local_time, current_app.config['TIMEZONE'], 'UTC')
+                    setattr(instance, field_name, utc_time)
+
+
+class BaseModelView(CheckAccessMixin, TimeZoneMixin, ModelView):
+    pass
+
+
+class UserModelView(BaseModelView):
     column_list = [
         'active',
         'username',
@@ -46,6 +83,11 @@ class UserModelView(CheckAccessMixin, ModelView):
         'created_at',
         'last_login_at',
     ]
+
+    datetime_fields = (
+        'created_at',
+        'last_login_at',
+    )
 
     form_excluded_columns = [
         'fs_uniquifier',
@@ -71,19 +113,21 @@ class UserModelView(CheckAccessMixin, ModelView):
         },
     }
 
-    def on_model_change(self, form, User, is_created):
+    def on_model_change(self, form, instance, is_created):
+        super().on_model_change(form, instance, is_created)
+
         raw_password = form.raw_password.data
         if is_created and not raw_password:
             raise ValidationError('Password is required for creating')
         elif form.raw_password.data:
-            User.set_password(form.raw_password.data)
+            instance.set_password(form.raw_password.data)
 
     @staticmethod
     def get_access_permission():
         return access_to_users
 
 
-class RecordModelView(CheckAccessMixin, ModelView):
+class RecordModelView(BaseModelView):
     can_export = True
 
     column_filters = [
@@ -103,6 +147,11 @@ class RecordModelView(CheckAccessMixin, ModelView):
         'created_at',
         'updated_at',
     ]
+
+    datetime_fields = (
+        'created_at',
+        'updated_at',
+    )
 
     form_columns = [
         'domain',
@@ -141,10 +190,12 @@ class RecordModelView(CheckAccessMixin, ModelView):
 
         return super().validate_form(form)
 
-    def on_model_change(self, form, model, is_created):
-        model.ip_addresses = None
-        model.updated_at = None
-        model.update_ip_addresses()
+    def on_model_change(self, form, instance, is_created):
+        super().on_model_change(form, instance, is_created)
+
+        instance.ip_addresses = None
+        instance.updated_at = None
+        instance.update_ip_addresses()
 
     @action('activate_records', 'Activate', 'Selected records will be activated')
     def activate(self, selected_ids):
@@ -155,7 +206,7 @@ class RecordModelView(CheckAccessMixin, ModelView):
         change_active_status(Record, selected_ids, False)
 
 
-class IPRangeModelView(CheckAccessMixin, ModelView):
+class IPRangeModelView(BaseModelView):
     can_export = True
 
     column_labels = {
@@ -175,6 +226,10 @@ class IPRangeModelView(CheckAccessMixin, ModelView):
         'description',
         'created_at',
     ]
+
+    datetime_fields = (
+        'created_at',
+    )
 
     form_columns = [
         'active',
@@ -212,12 +267,16 @@ class IPRangeModelView(CheckAccessMixin, ModelView):
         change_active_status(IPRange, selected_ids, False)
 
 
-class APIPKeyModelView(CheckAccessMixin, ModelView):
+class APIPKeyModelView(BaseModelView):
     column_list = [
         'name',
         'key',
         'created_at',
     ]
+
+    datetime_fields = (
+        'created_at',
+    )
 
     form_columns = [
         'name',

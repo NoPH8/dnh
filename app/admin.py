@@ -54,16 +54,25 @@ class TimeZoneMixin:
 
         super().__init__(*args, **kwargs)
 
+    def create_form(self, obj=None):
+        form = super().create_form(obj)
+
+        return self.apply_tz_to_form_data(form)
+
     def edit_form(self, obj):
         form = super().edit_form(obj)
 
+        return self.apply_tz_to_form_data(form)
+
+    def apply_tz_to_form_data(self, form):
         for field_name in self.datetime_fields:
             if field := getattr(form, field_name, None):
-                field.data = apply_timezone(
-                    field.data,
-                    current_app.config['SERVER_TIMEZONE'],
-                    current_app.config['USER_TIMEZONE'],
-                )
+                if field.data:
+                    field.data = apply_timezone(
+                        field.data,
+                        current_app.config['SERVER_TIMEZONE'],
+                        current_app.config['USER_TIMEZONE'],
+                    )
 
         return form
 

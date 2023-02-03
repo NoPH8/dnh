@@ -118,17 +118,20 @@ class Record(db.Model):
     def __str__(self):
         return self.domain
 
-    def update_ip_addresses(self) -> bool:
+    def update_ip_addresses(self, apply_tz=True) -> bool:
         """Returns True if ip_addresses were updated"""
         ip_addresses = get_ip_addresses_str(self)
 
         if self.ip_addresses != ip_addresses:
             self.ip_addresses = ip_addresses
-            self.updated_at = apply_timezone(
-                datetime.datetime.now(),
-                current_app.config['TIMEZONE'],
-                'UTC',
-            )
+            if apply_tz:
+                self.updated_at = apply_timezone(
+                    datetime.datetime.now(),
+                    current_app.config['USER_TIMEZONE'],
+                    current_app.config['SERVER_TIMEZONE'],
+                )
+            else:
+                self.updated_at = datetime.datetime.now()
 
             return True
 

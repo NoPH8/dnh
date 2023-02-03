@@ -10,6 +10,10 @@ def format_datetime_with_tz(view, context, instance, field_name):
         return field
 
     return (
-        apply_timezone(field, 'UTC', current_app.config['TIMEZONE'])
+        apply_timezone(
+            field,
+            current_app.config['SERVER_TIMEZONE'],
+            current_app.config['USER_TIMEZONE'],
+        )
         .strftime(current_app.config['DATETIME_FORMAT'])
     ) if field else field

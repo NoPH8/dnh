@@ -59,7 +59,11 @@ class TimeZoneMixin:
 
         for field_name in self.datetime_fields:
             if field := getattr(form, field_name, None):
-                field.data = apply_timezone(field.data, 'UTC', current_app.config['TIMEZONE'])
+                field.data = apply_timezone(
+                    field.data,
+                    current_app.config['SERVER_TIMEZONE'],
+                    current_app.config['USER_TIMEZONE'],
+                )
 
         return form
 
@@ -67,7 +71,11 @@ class TimeZoneMixin:
         for field_name in self.datetime_fields:
             if field := getattr(form, field_name, None):
                 if local_time := field.data:
-                    utc_time = apply_timezone(local_time, current_app.config['TIMEZONE'], 'UTC')
+                    utc_time = apply_timezone(
+                        local_time,
+                        current_app.config['USER_TIMEZONE'],
+                        current_app.config['SERVER_TIMEZONE'],
+                    )
                     setattr(instance, field_name, utc_time)
 
 

@@ -4,10 +4,6 @@ from collections import deque
 from functools import cached_property
 from logging import Formatter, StreamHandler
 
-from config import AppConfig
-
-tz = zoneinfo.ZoneInfo(AppConfig.TIMEZONE)
-
 
 class FIFOTemporaryStream:
     MAX_SIZE = 30
@@ -26,9 +22,14 @@ class FIFOTemporaryStream:
 class TZFormatter(Formatter):
     """override logging.Formatter to use an aware datetime object"""
 
-    @staticmethod
-    def converter(timestamp):
-        return datetime.datetime.fromtimestamp(timestamp, tz=tz)
+    @cached_property
+    def timezone(self):
+        from flask import current_app
+
+        return zoneinfo.ZoneInfo(current_app.config['USER_TIMEZONE'])
+
+    def converter(self, timestamp):
+        return datetime.datetime.fromtimestamp(timestamp, tz=self.timezone)
 
     def formatTime(self, record, datefmt=None):
         dt = self.converter(record.created)

@@ -44,7 +44,9 @@ All possible parameters are in the table below.
 | SECURITY_PASSWORD_SALT | Yes      |                   | Flask-security password salt.           |
 |                        |          |                   | See note below the table                |
 +------------------------+----------+-------------------+-----------------------------------------+
-| TIMEZONE               | No       | UTC               | IANA time zone                          |
+| SERVER_TIMEZONE        | No       | UTC               | IANA time zone on server                |
++------------------------+----------+-------------------+-----------------------------------------+
+| USER_TIMEZONE          | No       | UTC               | IANA time zone to show for users        |
 +------------------------+----------+-------------------+-----------------------------------------+
 
 To create 'SECRET_KEY' and 'SECURITY_PASSWORD_SALT' values you can use pre-installed make-helpers

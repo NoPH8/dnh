@@ -14,7 +14,8 @@ class AppConfig:
     # Common settings
     APP_NAME = config('APP_NAME', default='DNH')
 
-    TIMEZONE = config('TIMEZONE', default='UTC')
+    SERVER_TIMEZONE = config('SERVER_TIMEZONE', default='UTC')
+    USER_TIMEZONE = config('USER_TIMEZONE', default='UTC')
     DATETIME_FORMAT = config('DATETIME_FORMAT', default='%Y-%m-%d %H:%M:%S')
 
     DNS_SERVERS = config('DNS_SERVERS', cast=str_to_list, default='')
@@ -57,7 +58,8 @@ class AppConfigTesting(AppConfig):
     DB_FULL_PATH = pathlib.Path.joinpath(DB_PATH, DB_NAME)
     SQLALCHEMY_DATABASE_URI = f'sqlite:///{DB_FULL_PATH}'
 
-    TIMEZONE = 'UTC'
+    USER_TIMEZONE = 'UTC'
+    SERVER_TIMEZONE = 'UTC'
     DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
     SECURITY_PASSWORD_HASH = 'plaintext'

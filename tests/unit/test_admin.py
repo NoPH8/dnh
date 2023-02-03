@@ -41,7 +41,7 @@ def test_ip_range_model_view_actions(admin_view, ip_range, init_value, method_na
 
 def test_time_zone_mixin_edit_form(app, mocker):
     current_tz = 'Europe/Kyiv'
-    app.config['TIMEZONE'] = current_tz
+    app.config['USER_TIMEZONE'] = current_tz
 
     now = datetime.datetime.now()
     m_form = mocker.Mock()

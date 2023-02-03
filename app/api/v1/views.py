@@ -36,7 +36,7 @@ def get_ip_list_response() -> dict:
 
     all_ip_addresses.update(set(db.session.execute(custom_ranges_query).scalars()))
     last_record = db.session.execute(
-        db.select(Record.updated_at).order_by(Record.updated_at.desc())
+        db.select(Record.updated_at).filter(Record.active).order_by(Record.updated_at.desc())
     ).first()
 
     return {

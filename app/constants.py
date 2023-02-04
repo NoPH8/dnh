@@ -7,3 +7,12 @@ ROLES = (
     ROLE_RECORDS_EDITOR,
     ROLE_API_KEY_EDITOR,
 )
+
+
+IP_FAMILY_IP_v4 = 'ipv4'
+IP_FAMILY_IP_v6 = 'ipv6'
+
+IP_FAMILY_VALUES = (
+    IP_FAMILY_IP_v4,
+    IP_FAMILY_IP_v6,
+)

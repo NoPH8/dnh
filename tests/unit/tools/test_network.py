@@ -3,6 +3,7 @@ import pytest
 
 from app.tools.network import (extract_domain, get_dns_resolver,
                                get_ip_addresses_str, is_ip_address_in_network,
+                               is_ipv4_address, is_ipv6_address,
                                validate_domain, validate_ip_address,
                                validate_ip_range)
 
@@ -88,6 +89,22 @@ def test_ip_address_in_range(ip_addr, ip_range, expected):
     result = is_ip_address_in_network(ip_addr, ip_range)
 
     assert result == expected
+
+
+@pytest.mark.parametrize('address, expected', [
+    ('127.0.0.1', True),
+    ('3002:0bd6:0000:0000:0000:ee00:0033:6778', False),
+])
+def test_is_ipv4_address(address, expected):
+    assert is_ipv4_address(address) == expected
+
+
+@pytest.mark.parametrize('address, expected', [
+    ('127.0.0.1', False),
+    ('3002:0bd6:0000:0000:0000:ee00:0033:6778', True),
+])
+def test_is_ipv6_address(address, expected):
+    assert is_ipv6_address(address) == expected
 
 
 @pytest.mark.parametrize('value,expected', [

@@ -107,6 +107,14 @@ def is_ipv4_in_network(ip_address, ip_network) -> bool:
     return (ipaddr & mask) == (netaddr & mask)
 
 
+def is_ipv4_address(ip_address: str) -> bool:
+    return '.' in ip_address
+
+
+def is_ipv6_address(ip_address: str) -> bool:
+    return ':' in ip_address
+
+
 def validate_domain(domain_like_str: str) -> bool:
     validator = DomainValidator()
 

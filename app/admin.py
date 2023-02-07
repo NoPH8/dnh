@@ -2,7 +2,7 @@ from typing import Iterable, Optional
 
 import flask_admin
 from flask import current_app, redirect, url_for
-from flask_admin import AdminIndexView
+from flask_admin import AdminIndexView, expose
 from flask_admin.actions import action
 from flask_admin.contrib.sqla import ModelView
 from flask_principal import PermissionDenied
@@ -11,6 +11,7 @@ from wtforms import PasswordField, ValidationError
 
 from config import AppConfig
 
+from .dashboard import dashboard
 from .database import db
 from .formatters import format_datetime_with_tz
 from .models import APIKey, IPRange, Record, User
@@ -320,6 +321,11 @@ class DashboardIndexView(AdminIndexView):
         '/static/js/admin/jquery.timeago.min.js',
         '/static/js/admin/uptime.js',
     ]
+
+    @expose('/clear_logs', methods=('POST', ))
+    def clear_logs(self):
+        dashboard.clear_logs()
+        return redirect('/admin/')
 
 
 app_admin = flask_admin.Admin(

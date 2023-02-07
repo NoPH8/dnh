@@ -183,3 +183,10 @@ def test_dashboard_index_view(client, user):
     response = client.get('admin/')
     assert response.status_code == HTTPStatus.OK
     assert 'Uptime' in response.text
+
+
+def test_dashboard_clear_logs(dashboard, logger_record, client, user):
+    user(is_auth=True)
+
+    response = client.post('admin/clear_logs')
+    assert response.status_code == HTTPStatus.FOUND

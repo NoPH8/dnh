@@ -2,11 +2,11 @@ from datetime import datetime
 
 import pytest
 
-from app.logging import FIFOTemporaryStream, TZFormatter
+from app.logging import DashboardFIFOStream, TZFormatter
 
 
-def test_fifo_temporary_stream():
-    stream = FIFOTemporaryStream()
+def test_dashboard_fifo_stream():
+    stream = DashboardFIFOStream()
     stream.write('Test msg')
 
     assert list(stream.show()) == ['Test msg']

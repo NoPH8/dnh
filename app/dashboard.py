@@ -6,7 +6,7 @@ from typing import Optional
 from flask import current_app, render_template
 from turbo_flask import Turbo
 
-from app.logging import FIFOTemporaryStream, dashboard_handler
+from app.logging import DashboardFIFOStream, dashboard_handler
 
 turbo = Turbo()
 
@@ -20,6 +20,10 @@ class Dashboard:
         self.app = app
 
     @property
+    def has_logs(self) -> bool:
+        return bool(self.log_stream.storage)
+
+    @property
     def log(self):
         return self.log_stream.show()
 
@@ -30,7 +34,7 @@ class Dashboard:
     @cached_property
     def log_stream(self):  # pragma: no cover
         handler = next(
-            x for x in current_app.logger.handlers if isinstance(x.stream, FIFOTemporaryStream)
+            x for x in current_app.logger.handlers if isinstance(x.stream, DashboardFIFOStream)
         )
         return handler.stream
 
@@ -41,6 +45,10 @@ class Dashboard:
     @property
     def update_interval(self):
         return current_app.config["DNS_UPDATE_INTERVAL"]
+
+    def clear_logs(self):
+        self.log_stream.clear()
+        self.update_dashboard()
 
     def init_app(self, app):
         self.app = app

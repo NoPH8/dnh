@@ -23,4 +23,13 @@
             {% endfor %}
         </div>
     </div>
+    {% if dashboard.has_logs %}
+        <div style="margin-top: 20px">
+            <form action="/admin/clear_logs" method="POST">
+                <button type="submit" class="btn btn-secondary">
+                    Clear dashboard log
+                </button>
+            </form>
+        </div>
+    {% endif %}
 </div>

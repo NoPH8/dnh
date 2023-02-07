@@ -4,6 +4,7 @@ from flask_security import hash_password, login_user
 
 from app import Role, User, create_app
 from app.admin import app_admin
+from app.dashboard import Dashboard
 from app.database import db as app_db
 from app.models import APIKey, IPRange, Record
 from config import AppConfigTesting
@@ -24,6 +25,16 @@ def app():
         delattr(app.security.confirm_register_form, 'username')
         delattr(app.security.login_form, 'username')
         delattr(app.security.register_form, 'username')
+
+
+@pytest.fixture()
+def dashboard(app):
+    return Dashboard(app)
+
+
+@pytest.fixture
+def logger_record(app):
+    app.logger.error('Test example')
 
 
 @pytest.fixture()

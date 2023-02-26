@@ -4,13 +4,13 @@
 #
 #    pip-compile
 #
-apscheduler==3.9.1.post1
+apscheduler==3.10.0
     # via flask-apscheduler
 attrs==22.2.0
     # via pytest
 bcrypt==4.0.1
     # via flask-security-too
-bleach==5.0.1
+bleach==6.0.0
     # via flask-security-too
 blinker==1.5
     # via
@@ -24,15 +24,15 @@ click==8.1.3
     # via
     #   flask
     #   pip-tools
-coverage[toml]==7.0.5
+coverage[toml]==7.2.0
     # via
     #   -r requirements.in
     #   pytest-cov
 distlib==0.3.6
     # via virtualenv
-dnspython==2.2.1
+dnspython==2.3.0
     # via email-validator
-email-validator==1.3.0
+email-validator==1.3.1
     # via flask-security-too
 exceptiongroup==1.1.0
     # via pytest
@@ -40,7 +40,7 @@ filelock==3.9.0
     # via virtualenv
 flake8==6.0.0
     # via -r requirements.in
-flask==2.2.2
+flask==2.2.3
     # via
     #   -r requirements.in
     #   flask-admin
@@ -53,7 +53,7 @@ flask==2.2.2
     #   flask-sqlalchemy
     #   flask-wtf
     #   turbo-flask
-flask-admin==1.6.0
+flask-admin==1.6.1
     # via -r requirements.in
 flask-apscheduler==1.12.4
     # via -r requirements.in
@@ -63,27 +63,27 @@ flask-mailman==0.3.0
     # via flask-security-too
 flask-principal==0.4.0
     # via flask-security-too
-flask-security-too[common]==5.0.2
+flask-security-too[common]==5.1.0
     # via -r requirements.in
 flask-sock==0.6.0
     # via turbo-flask
-flask-sqlalchemy==3.0.2
+flask-sqlalchemy==3.0.3
     # via -r requirements.in
-flask-wtf==1.0.1
+flask-wtf==1.1.1
     # via flask-security-too
-greenlet==2.0.1
+greenlet==2.0.2
     # via sqlalchemy
 gunicorn==20.1.0
     # via -r requirements.in
 h11==0.14.0
     # via wsproto
-identify==2.5.13
+identify==2.5.18
     # via pre-commit
 idna==3.4
     # via email-validator
 iniconfig==2.0.0
     # via pytest
-isort[requirements_deprecated_finder]==5.11.4
+isort[requirements_deprecated_finder]==5.12.0
     # via -r requirements.in
 itsdangerous==2.1.2
     # via
@@ -92,7 +92,7 @@ itsdangerous==2.1.2
     #   flask-wtf
 jinja2==3.1.2
     # via flask
-markupsafe==2.1.1
+markupsafe==2.1.2
     # via
     #   jinja2
     #   werkzeug
@@ -109,13 +109,13 @@ packaging==23.0
     #   pytest
 passlib==1.7.4
     # via flask-security-too
-pip-tools==6.12.1
+pip-tools==6.12.2
     # via -r requirements.in
-platformdirs==2.6.2
+platformdirs==3.0.0
     # via virtualenv
 pluggy==1.0.0
     # via pytest
-pre-commit==2.21.0
+pre-commit==3.1.0
     # via -r requirements.in
 pycodestyle==2.10.0
     # via flake8
@@ -125,7 +125,7 @@ pyflakes==3.0.1
     #   flake8
 pyproject-hooks==1.0.0
     # via build
-pytest==7.2.0
+pytest==7.2.1
     # via
     #   -r requirements.in
     #   pytest-cov
@@ -139,9 +139,9 @@ pytest-timeout==2.1.0
     # via -r requirements.in
 python-dateutil==2.8.2
     # via flask-apscheduler
-python-decouple==3.6
+python-decouple==3.7
     # via -r requirements.in
-pytz==2022.7
+pytz==2022.7.1
     # via apscheduler
 pytz-deprecation-shim==0.1.0.post0
     # via tzlocal
@@ -154,7 +154,7 @@ six==1.16.0
     #   apscheduler
     #   bleach
     #   python-dateutil
-sqlalchemy==1.4.46
+sqlalchemy==2.0.4
     # via flask-sqlalchemy
 tomli==2.0.1
     # via
@@ -164,15 +164,17 @@ tomli==2.0.1
     #   pytest
 turbo-flask==0.8.3
     # via -r requirements.in
+typing-extensions==4.5.0
+    # via sqlalchemy
 tzdata==2022.7
     # via pytz-deprecation-shim
 tzlocal==4.2
     # via apscheduler
-virtualenv==20.17.1
+virtualenv==20.19.0
     # via pre-commit
 webencodings==0.5.1
     # via bleach
-werkzeug==2.2.2
+werkzeug==2.2.3
     # via
     #   flask
     #   flask-login

@@ -22,9 +22,9 @@ def app():
         app_db.session.remove()
         app_db.drop_all()
         # Fix for Flask-security from singleton
-        delattr(app.security.confirm_register_form, 'username')
-        delattr(app.security.login_form, 'username')
-        delattr(app.security.register_form, 'username')
+        for form_name in ('confirm_register_form', 'login_form', 'register_form'):
+            form_class = app.security.forms.get(form_name).cls
+            delattr(form_class, 'username')
 
 
 @pytest.fixture()

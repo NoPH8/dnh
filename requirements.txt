@@ -61,7 +61,7 @@ flask-mailman==0.3.0
     # via flask-security-too
 flask-principal==0.4.0
     # via flask-security-too
-flask-security-too[common]==5.1.0
+flask-security-too[common]==5.1.1
     # via -r requirements.in
 flask-sock==0.6.0
     # via turbo-flask

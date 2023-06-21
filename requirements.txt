@@ -130,7 +130,7 @@ pytest==7.3.2
     #   pytest-timeout
 pytest-cov==4.1.0
     # via -r requirements.in
-pytest-mock==3.10.0
+pytest-mock==3.11.1
     # via -r requirements.in
 pytest-timeout==2.1.0
     # via -r requirements.in

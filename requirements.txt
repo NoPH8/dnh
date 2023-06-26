@@ -63,7 +63,7 @@ flask-security-too[common]==5.2.0
     # via -r requirements.in
 flask-sock==0.6.0
     # via turbo-flask
-flask-sqlalchemy==3.0.3
+flask-sqlalchemy==3.0.5
     # via -r requirements.in
 flask-wtf==1.1.1
     # via flask-security-too

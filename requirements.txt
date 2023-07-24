@@ -69,7 +69,7 @@ flask-wtf==1.1.1
     # via flask-security-too
 greenlet==2.0.2
     # via sqlalchemy
-gunicorn==20.1.0
+gunicorn==21.2.0
     # via -r requirements.in
 h11==0.14.0
     # via wsproto
@@ -103,6 +103,7 @@ nodeenv==1.7.0
 packaging==23.0
     # via
     #   build
+    #   gunicorn
     #   pytest
 passlib==1.7.4
     # via flask-security-too

@@ -36,7 +36,7 @@ filelock==3.9.0
     # via virtualenv
 flake8==6.1.0
     # via -r requirements.in
-flask==2.3.2
+flask==2.3.3
     # via
     #   -r requirements.in
     #   flask-admin
@@ -166,7 +166,7 @@ virtualenv==20.19.0
     # via pre-commit
 webencodings==0.5.1
     # via bleach
-werkzeug==2.3.3
+werkzeug==2.3.7
     # via
     #   flask
     #   flask-login

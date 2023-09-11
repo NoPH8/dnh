@@ -63,7 +63,7 @@ flask-security-too[common]==5.2.0
     # via -r requirements.in
 flask-sock==0.6.0
     # via turbo-flask
-flask-sqlalchemy==3.0.5
+flask-sqlalchemy==3.1.0
     # via -r requirements.in
 flask-wtf==1.1.1
     # via flask-security-too
@@ -152,7 +152,7 @@ six==1.16.0
     #   apscheduler
     #   bleach
     #   python-dateutil
-sqlalchemy==2.0.4
+sqlalchemy==2.0.20
     # via flask-sqlalchemy
 turbo-flask==0.8.4
     # via -r requirements.in

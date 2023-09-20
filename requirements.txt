@@ -51,7 +51,7 @@ flask==2.3.3
     #   turbo-flask
 flask-admin==1.6.1
     # via -r requirements.in
-flask-apscheduler==1.12.4
+flask-apscheduler==1.13.0
     # via -r requirements.in
 flask-login==0.6.2
     # via flask-security-too

@@ -166,7 +166,7 @@ virtualenv==20.19.0
     # via pre-commit
 webencodings==0.5.1
     # via bleach
-werkzeug==2.3.7
+werkzeug==3.0.1
     # via
     #   flask
     #   flask-login

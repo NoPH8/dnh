@@ -3,7 +3,7 @@ run-name: Check and tests
 on: [push]
 
 env:
-  CODECOV_TOKEN: 1a09261f-bcee-4628-bd86-9c67ccdd56c2
+  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
 jobs:
   # Label of the runner job

@@ -36,7 +36,7 @@ dnspython==2.3.0
     # via email-validator
 docopt==0.6.2
     # via pipreqs
-email-validator==1.3.1
+email-validator==2.1.0.post1
     # via flask-security-too
 exceptiongroup==1.1.3
     # via pytest
@@ -67,13 +67,15 @@ flask-mailman==0.3.0
     # via flask-security-too
 flask-principal==0.4.0
     # via flask-security-too
-flask-security-too[common]==5.2.0
-    # via -r requirements.in
+flask-security-too[common]==5.3.3
+    # via
+    #   -r requirements.in
+    #   flask-security-too
 flask-sock==0.6.0
     # via turbo-flask
 flask-sqlalchemy==3.1.1
     # via -r requirements.in
-flask-wtf==1.1.1
+flask-wtf==1.2.1
     # via flask-security-too
 greenlet==2.0.2
     # via sqlalchemy
@@ -101,6 +103,7 @@ jinja2==3.1.2
     # via flask
 markupsafe==2.1.2
     # via
+    #   flask-security-too
     #   jinja2
     #   werkzeug
     #   wtforms

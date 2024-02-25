@@ -137,7 +137,7 @@ pyflakes==3.2.0
     #   flake8
 pyproject-hooks==1.0.0
     # via build
-pytest==8.0.0
+pytest==8.0.1
     # via
     #   -r requirements.in
     #   pytest-cov

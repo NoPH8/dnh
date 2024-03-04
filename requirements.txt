@@ -14,7 +14,7 @@ blinker==1.6.2
     # via
     #   flask
     #   flask-principal
-build==0.10.0
+build==1.0.3
     # via pip-tools
 certifi==2023.7.22
     # via requests
@@ -119,7 +119,7 @@ passlib==1.7.4
     # via flask-security-too
 pip-api==0.0.30
     # via isort
-pip-tools==7.3.0
+pip-tools==7.4.0
     # via -r requirements.in
 pipreqs==0.4.13
     # via isort
@@ -136,7 +136,9 @@ pyflakes==3.2.0
     #   -r requirements.in
     #   flake8
 pyproject-hooks==1.0.0
-    # via build
+    # via
+    #   build
+    #   pip-tools
 pytest==8.0.2
     # via
     #   -r requirements.in

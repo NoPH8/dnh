@@ -83,7 +83,7 @@ h11==0.14.0
     # via wsproto
 identify==2.5.18
     # via pre-commit
-idna==3.4
+idna==3.7
     # via
     #   email-validator
     #   requests

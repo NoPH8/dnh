@@ -161,7 +161,7 @@ pytz-deprecation-shim==0.1.0.post0
     # via tzlocal
 pyyaml==6.0
     # via pre-commit
-requests==2.31.0
+requests==2.32.0
     # via yarg
 simple-websocket==0.9.0
     # via flask-sock

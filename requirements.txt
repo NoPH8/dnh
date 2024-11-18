@@ -10,7 +10,7 @@ bcrypt==4.0.1
     # via flask-security-too
 bleach==6.0.0
     # via flask-security-too
-blinker==1.6.2
+blinker==1.9.0
     # via
     #   flask
     #   flask-principal
@@ -44,7 +44,7 @@ filelock==3.9.0
     # via virtualenv
 flake8==7.0.0
     # via -r requirements.in
-flask==2.3.3
+flask==3.1.0
     # via
     #   -r requirements.in
     #   flask-admin
@@ -93,7 +93,7 @@ iniconfig==2.0.0
     # via pytest
 isort[requirements-deprecated-finder,requirements_deprecated_finder]==5.12.0
     # via -r requirements.in
-itsdangerous==2.1.2
+itsdangerous==2.2.0
     # via
     #   flask
     #   flask-wtf
@@ -193,7 +193,7 @@ virtualenv==20.19.0
     # via pre-commit
 webencodings==0.5.1
     # via bleach
-werkzeug==2.3.7
+werkzeug==3.1.3
     # via
     #   flask
     #   flask-login
